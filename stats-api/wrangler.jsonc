@@ -1,0 +1,8 @@
+{
+	"name": "diabetes-stats",
+	"main": "src/index.js",
+	"compatibility_date": "2026-10-01",
+	"d1_databases": [
+		{ "binding": "DB", "database_name": "diabetes-stats", "database_id": "2b166652-e73c-4da7-a3f9-390cc1394012" }
+	]
+}

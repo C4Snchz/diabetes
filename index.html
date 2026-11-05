@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tu Riesgo de Diabetes</title>
-<meta name="description" content="Información sobre diabetes, test de riesgo FINDRISC y juego de mitos y realidades. Creado por Stefani Lima.">
+<meta name="description" content="Información sobre diabetes, test de riesgo FINDRISC y juego de mitos y realidades. Creado por Stefani Lima y Lucia Vázquez.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lexend:wght@400;600&family=Young+Serif&display=swap">
@@ -233,6 +233,22 @@ section { display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 2
 .share .btns { display: flex; flex-wrap: wrap; gap: 12px; }
 .copied { font-weight: 600; color: var(--leaf-ink); font-size: 0.95rem; min-height: 1.4em; }
 
+/* stats: single-series horizontal bars, value label at the end; colors only where they mean risk level */
+.stats { display: flex; flex-direction: column; gap: 26px; }
+.stats-lead { font-size: 1.05rem; }
+.stats-lead b { font-family: var(--serif); font-weight: 400; font-size: 1.5rem; color: var(--plum); }
+.chart h3 { font-family: var(--sans); font-weight: 600; font-size: 1.05rem; margin: 0 0 12px; }
+.bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.bars li { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; row-gap: 5px; align-items: center; }
+.bars .bl { grid-column: 1 / -1; font-size: 0.93rem; }
+.bars .bt { height: 12px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+.bars .bf { display: block; height: 100%; width: 0; border-radius: 4px; background: var(--plum); transition: width .9s cubic-bezier(.2, .8, .2, 1); }
+.bars .bv { font-weight: 600; font-size: 0.93rem; min-width: 3.2em; text-align: right; font-variant-numeric: tabular-nums; }
+.days { display: flex; align-items: flex-end; gap: 4px; height: 90px; border-bottom: 2px solid var(--ink); }
+.days span { flex: 1; min-height: 2px; background: var(--tangerine); border-radius: 4px 4px 0 0; transition: height .9s cubic-bezier(.2, .8, .2, 1); }
+.days-axis { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--soft); margin-top: 6px; }
+.stats-empty { background: var(--plum-tint); border-radius: 20px; padding: 20px; }
+
 /* signature footer */
 footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid var(--ink); padding-top: 26px; }
 .signature { display: flex; flex-direction: column; gap: 0; }
@@ -285,6 +301,7 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 .lights.lit .light div:nth-child(2) { animation-delay: .12s; }
 .lights.lit .light div:nth-child(3) { animation-delay: .24s; }
 .signature.lit strong { animation: write 1.3s ease both; }
+.signature.lit strong + strong { animation-delay: .6s; }
 
 @media (prefers-reduced-motion: reduce) {
 	*, *::before, *::after { animation: none !important; transition: none !important; }
@@ -302,6 +319,7 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 	<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3c3.6 4.6 6 7.7 6 10.6A6 6 0 0 1 6 13.6C6 10.7 8.4 7.6 12 3z"/></symbol>
 	<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17.5v.01"/></symbol>
 	<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/><path d="M7 15h10"/></symbol>
+	<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></symbol>
 	<symbol id="i-game" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="5"/><path d="M8 11v3M6.5 12.5h3M15 12h.01M17 14h.01"/></symbol>
 	<symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2.2-6 2.8 3v3M8 12.5l2.5-4.5 3.5 1 2 3.5M10.5 8L9 14"/></symbol>
 	<symbol id="i-scale" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0M12 10l1.5-2"/></symbol>
@@ -325,7 +343,7 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 			</div>
 			<ul class="trust">
 				<li><svg class="i"><use href="#i-clock"/></svg>Rápido</li>
-				<li><svg class="i"><use href="#i-lock"/></svg>Anónimo, no guarda datos</li>
+				<li><svg class="i"><use href="#i-lock"/></svg>Anónimo: sin nombre ni contacto</li>
 				<li><svg class="i"><use href="#i-check"/></svg>Test usado por médicos</li>
 			</ul>
 		</div>
@@ -438,6 +456,12 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 		<div class="game-card" id="game" aria-live="polite"></div>
 	</section>
 
+	<section id="estadisticas">
+		<h2 class="sec-title"><svg class="i c-plum"><use href="#i-chart"/></svg>Lo que respondió la gente</h2>
+		<div class="stats" id="stats"><p class="soft">Cargando estadísticas…</p></div>
+		<p class="note">Respuestas anónimas de quienes usaron esta página. No es una muestra representativa de la población.</p>
+	</section>
+
 	<section id="prevencion">
 		<h2 class="sec-title"><svg class="i c-leaf"><use href="#i-walk"/></svg>Lo que podés hacer desde hoy</h2>
 		<ul class="tips">
@@ -475,11 +499,12 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 		<div class="signature">
 			<span>Creado por</span>
 			<strong>Stefani Lima</strong>
+			<strong>Lucia Vázquez</strong>
 		</div>
 		<div class="fine">
 			<p>Esta página es informativa y no reemplaza la consulta con un profesional de la salud.</p>
 			<p>El test usa la escala FINDRISC (Lindström y Tuomilehto, <i>Diabetes Care</i>, 2003), que estima el riesgo de desarrollar diabetes tipo 2 en los próximos 10 años. Los valores de referencia siguen los criterios de la Asociación Americana de Diabetes (ADA).</p>
-			<p>Las respuestas del test no se guardan ni se envían a ningún lado.</p>
+			<p>Las respuestas del test y del juego se guardan de forma anónima para armar las estadísticas: solo las opciones elegidas y el día. No se guarda tu nombre, tu contacto, tu IP ni tu altura o peso exactos.</p>
 		</div>
 	</footer>
 </div>
@@ -487,6 +512,8 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 <script>
 (function () {
 	var SITE = 'https://is.gd/testdiabetes';
+	var API = 'https://diabetes-stats.felipesa254.workers.dev';
+	var LOG = location.hostname === 'c4snchz.github.io';
 
 	/* ---------- Test FINDRISC ---------- */
 	var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -645,6 +672,7 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 			quiz.querySelectorAll('.opt').forEach(function (btn) {
 				btn.addEventListener('click', function () {
 					var o = opts[+btn.dataset.i];
+					o.i = +btn.dataset.i;
 					answers[s.id] = o;
 					quiz.querySelectorAll('.opt').forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
 					btn.classList.add('picked');
@@ -710,6 +738,11 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 		var mk = quiz.querySelector('.marker');
 		requestAnimationFrame(function () { requestAnimationFrame(function () { mk.style.left = markerLeft + '%'; }); });
 		if (c.k === 'ok') setTimeout(function () { confetti(quiz); }, 400);
+		send('/test', {
+			score: score, sexo: answers.sexo.i, edad: answers.edad.i, imc: answers.imc.bmi < 25 ? 0 : answers.imc.bmi <= 30 ? 1 : 2,
+			cintura: answers.cintura.i, actividad: answers.actividad.i, verduras: answers.verduras.i,
+			presion: answers.presion.i, glucosa: answers.glucosa.i, familia: answers.familia.i
+		});
 	}
 
 	renderStep();
@@ -736,7 +769,7 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 		{ s: 'Empezar con insulina significa que hiciste algo mal.', real: false,
 			why: 'La diabetes cambia con los años y muchas personas necesitan insulina en algún momento. Es un tratamiento, no un castigo.' }
 	];
-	var gi = 0, hits = 0, answered = false;
+	var gi = 0, hits = 0, answered = false, picks = [];
 
 	function renderCard() {
 		answered = false;
@@ -756,6 +789,7 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 		var c = cards[gi];
 		var right = saidReal === c.real;
 		if (right) hits++;
+		picks[gi] = right ? 1 : 0;
 		game.classList.remove('yay', 'nope');
 		void game.offsetWidth;
 		game.classList.add(right ? 'yay' : 'nope');
@@ -778,12 +812,104 @@ footer { display: flex; flex-direction: column; gap: 22px; border-top: 2px solid
 		game.innerHTML = '<div class="anim from-right"><div class="big-score"><span class="count">0</span> <small>de ' + cards.length + ' aciertos</small></div>' +
 			'<p>' + msg + '</p>' +
 			'<div class="nav-row"><button type="button" class="btn light" id="greplay">Jugar de nuevo</button><a class="btn" href="#compartir">Desafiar a mi familia</a></div></div>';
-		document.getElementById('greplay').addEventListener('click', function () { gi = 0; hits = 0; renderCard(); });
+		document.getElementById('greplay').addEventListener('click', function () { gi = 0; hits = 0; picks = []; renderCard(); });
 		countUp(game.querySelector('.count'), hits);
 		if (hits >= 7) setTimeout(function () { confetti(game); }, 300);
+		send('/game', { picks: picks.join('') });
 	}
 
 	renderCard();
+
+	/* ---------- Estadísticas ---------- */
+	var statsBox = document.getElementById('stats');
+
+	function send(path, body) {
+		if (!LOG || !window.fetch) return;
+		fetch(API + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+			.then(function (r) { if (r.ok) loadStats(); })
+			.catch(function () {});
+	}
+
+	function pct(n, total) { return total ? Math.round(n / total * 100) : 0; }
+
+	function barList(rows, total, who) {
+		return '<ul class="bars">' + rows.map(function (r) {
+			var p = pct(r.n, total);
+			return '<li title="' + r.n + ' de ' + total + ' ' + who + '"><span class="bl">' + esc(r.label) + '</span>' +
+				'<span class="bt"><span class="bf" data-w="' + p + '"' + (r.color ? ' style="background:' + r.color + '"' : '') + '></span></span>' +
+				'<span class="bv">' + p + ' %</span></li>';
+		}).join('') + '</ul>';
+	}
+
+	function shortDay(iso) { var d = iso.split('-'); return +d[2] + '/' + +d[1]; }
+
+	function renderStats(d) {
+		if (!d.tests && !d.games) {
+			statsBox.innerHTML = '<p class="stats-empty">Todavía no hay respuestas. Hacé el test o jugá a Mito o realidad, y tus respuestas aparecen acá (sin tu nombre).</p>';
+			return;
+		}
+		var html = '<p class="stats-lead">Hasta hoy, <b>' + d.tests + '</b> ' + (d.tests === 1 ? 'persona hizo' : 'personas hicieron') +
+			' el test y <b>' + d.games + '</b> ' + (d.games === 1 ? 'jugó' : 'jugaron') + ' a Mito o realidad.</p>';
+
+		if (d.tests) {
+			var bandNames = ['Riesgo bajo', 'Ligeramente elevado', 'Moderado', 'Alto', 'Muy alto'];
+			var bandColors = ['var(--leaf)', 'var(--leaf)', 'var(--lemon)', 'var(--tangerine)', 'var(--berry)'];
+			html += '<div class="chart"><h3>Resultados del test</h3>' +
+				barList(d.bands.map(function (n, i) { return { label: bandNames[i], n: n, color: bandColors[i] }; }), d.tests, 'personas') +
+				'<p class="note">El <b>' + pct(d.consult, d.tests) + ' %</b> sacó 12 puntos o más, así que el test le recomienda consultar con su médico. El puntaje promedio es ' +
+				d.avgScore.toFixed(1).replace('.', ',') + ' de 26.</p></div>';
+
+			var a = d.answers, sum = function (arr, from, to) { var t = 0; for (var i = from; i <= to; i++) t += arr[i]; return t; };
+			var factors = [
+				{ label: 'Tiene 45 años o más', n: sum(a.edad, 1, 3) },
+				{ label: 'Tiene sobrepeso (IMC de 25 o más)', n: sum(a.imc, 1, 2) },
+				{ label: 'Cintura por encima de lo recomendado', n: sum(a.cintura, 1, 2) },
+				{ label: 'No hace 30 minutos de actividad por día', n: a.actividad[1] },
+				{ label: 'No come frutas o verduras todos los días', n: a.verduras[1] },
+				{ label: 'Tomó medicación para la presión', n: a.presion[1] },
+				{ label: 'Alguna vez tuvo la glucosa alta', n: a.glucosa[1] },
+				{ label: 'Tiene familiares con diabetes', n: sum(a.familia, 1, 2) }
+			].sort(function (x, y) { return y.n - x.n; });
+			html += '<div class="chart"><h3>Factores de riesgo más comunes</h3>' + barList(factors, d.tests, 'personas') + '</div>';
+
+			if (d.perDay.length) {
+				var byDay = {}, max = 1, cols = '', first = '', last = '';
+				d.perDay.forEach(function (r) { byDay[r.day] = r.n; if (r.n > max) max = r.n; });
+				for (var i = 13; i >= 0; i--) {
+					var iso = new Date(Date.now() - i * 864e5).toISOString().slice(0, 10), n = byDay[iso] || 0;
+					if (i === 13) first = shortDay(iso);
+					if (i === 0) last = 'hoy';
+					cols += '<span data-h="' + (n / max * 100) + '" title="' + shortDay(iso) + ': ' + n + (n === 1 ? ' test' : ' tests') + '"></span>';
+				}
+				html += '<div class="chart"><h3>Tests por día, últimas dos semanas</h3><div class="days">' + cols + '</div>' +
+					'<div class="days-axis"><span>' + first + '</span><span>Máximo: ' + max + ' en un día</span><span>' + last + '</span></div></div>';
+			}
+		}
+
+		if (d.games) {
+			var rows = cards.map(function (c, i) { return { label: c.s, n: d.cardHits[i] }; })
+				.sort(function (x, y) { return x.n - y.n; });
+			html += '<div class="chart"><h3>Mito o realidad: cuánta gente acertó cada frase</h3>' +
+				barList(rows, d.games, 'personas acertaron').replace(/class="bf"/g, 'class="bf" style="background:var(--leaf)"') +
+				'<p class="note">En promedio, la gente acierta ' + d.avgHits.toFixed(1).replace('.', ',') + ' de ' + cards.length + ' frases. Las de arriba son las que más confunden.</p></div>';
+		}
+
+		statsBox.innerHTML = html;
+		requestAnimationFrame(function () { requestAnimationFrame(function () {
+			statsBox.querySelectorAll('.bf').forEach(function (b) { b.style.width = b.dataset.w + '%'; });
+			statsBox.querySelectorAll('.days span').forEach(function (b) { b.style.height = b.dataset.h + '%'; });
+		}); });
+	}
+
+	function loadStats() {
+		if (!window.fetch) return;
+		fetch(API + '/stats', { cache: 'no-store' })
+			.then(function (r) { if (!r.ok) throw r; return r.json(); })
+			.then(renderStats)
+			.catch(function () { statsBox.innerHTML = '<p class="soft">No pudimos cargar las estadísticas. Probá recargar la página.</p>'; });
+	}
+
+	loadStats();
 
 	/* ---------- Animaciones al bajar ---------- */
 	if ('IntersectionObserver' in window && !reduce) {
