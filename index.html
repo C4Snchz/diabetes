@@ -7,199 +7,300 @@
 <meta name="description" content="Información sobre diabetes, test de riesgo FINDRISC y juego de mitos y realidades.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;800&display=swap">
 <style>
-/* Layout: one phone-first reading column; the blue circle (symbol of diabetes awareness) anchors the hero, the test is the centerpiece */
+/* Layout: one phone-first column of soft, colour-coded cards; a family under the blue awareness circle opens the page, the test is the centrepiece */
 :root {
-	--bg: #f2f5f9;
+	--bg: #f4f8fe;
 	--surface: #ffffff;
-	--ink: #122033;
-	--muted: #52627a;
-	--line: #d7dfea;
-	--blue: #1b5cab;
-	--blue-soft: #e2ecf8;
+	--ink: #1d2939;
+	--muted: #5a6a80;
+	--line: #dde6f2;
+	--blue: #2462c6;
+	--blue-soft: #e3edfc;
 	--on-blue: #ffffff;
-	--ok: #1d7347;
-	--ok-soft: #e0f2e8;
-	--warn: #9a5b00;
-	--warn-soft: #fbeed6;
-	--risk: #b0261d;
-	--risk-soft: #f8e1df;
-	--display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-	--body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, system-ui, sans-serif;
+	--sun: #f6b62e;
+	--sun-soft: #fff3d4;
+	--sun-ink: #8a5a00;
+	--coral: #ea6d52;
+	--coral-soft: #fde6df;
+	--coral-ink: #b03a22;
+	--mint: #2fa679;
+	--mint-soft: #dcf4ea;
+	--mint-ink: #19704f;
+	--display: "Fredoka", "Avenir Next Rounded", "Arial Rounded MT Bold", system-ui, sans-serif;
+	--body: "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) {
-		--bg: #0d1520; --surface: #142031; --ink: #e8eef6; --muted: #9eb0c7; --line: #26374e;
-		--blue: #6ea8ee; --blue-soft: #1a2d47; --on-blue: #0d1520;
-		--ok: #63d199; --ok-soft: #16301f; --warn: #f2b453; --warn-soft: #382910; --risk: #f3887f; --risk-soft: #3c1b19;
+		--bg: #0f1724; --surface: #172335; --ink: #ecf1f8; --muted: #a2b2c8; --line: #283a52;
+		--blue: #74aaf0; --blue-soft: #1b2f4b; --on-blue: #0f1724;
+		--sun: #f6c056; --sun-soft: #3a2e14; --sun-ink: #f6c97a;
+		--coral: #f28d77; --coral-soft: #3d221d; --coral-ink: #f7a796;
+		--mint: #5cc99c; --mint-soft: #15342a; --mint-ink: #7fdcb5;
 		color-scheme: dark;
 	}
 }
 :root[data-theme="dark"] {
-	--bg: #0d1520; --surface: #142031; --ink: #e8eef6; --muted: #9eb0c7; --line: #26374e;
-	--blue: #6ea8ee; --blue-soft: #1a2d47; --on-blue: #0d1520;
-	--ok: #63d199; --ok-soft: #16301f; --warn: #f2b453; --warn-soft: #382910; --risk: #f3887f; --risk-soft: #3c1b19;
+	--bg: #0f1724; --surface: #172335; --ink: #ecf1f8; --muted: #a2b2c8; --line: #283a52;
+	--blue: #74aaf0; --blue-soft: #1b2f4b; --on-blue: #0f1724;
+	--sun: #f6c056; --sun-soft: #3a2e14; --sun-ink: #f6c97a;
+	--coral: #f28d77; --coral-soft: #3d221d; --coral-ink: #f7a796;
+	--mint: #5cc99c; --mint-soft: #15342a; --mint-ink: #7fdcb5;
 	color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 [hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
 body {
 	background: var(--bg); color: var(--ink);
-	font-family: var(--body); font-size: 17px; line-height: 1.55;
+	font-family: var(--body); font-size: 17px; line-height: 1.6;
 	-webkit-font-smoothing: antialiased;
 }
 .wrap {
 	max-width: 680px; margin: 0 auto;
 	padding-left: max(16px, env(safe-area-inset-left, 0px));
 	padding-right: max(16px, env(safe-area-inset-right, 0px));
-	padding-block: 20px 48px;
-	display: flex; flex-direction: column; gap: 44px;
+	padding-block: 16px 40px;
+	display: flex; flex-direction: column; gap: 40px;
 }
-h1, h2, h3 { font-family: var(--display); line-height: 1.12; text-wrap: balance; margin: 0; }
-h1 { font-size: clamp(2rem, 7vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; }
-h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; }
-h3 { font-size: 1.12rem; font-weight: 600; }
+h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 7.5vw, 2.7rem); }
+h2 { font-size: 1.65rem; }
+h3 { font-size: 1.15rem; font-weight: 500; }
 p { margin: 0; }
 a { color: var(--blue); }
-.eyebrow { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); }
 .muted { color: var(--muted); }
+svg.i { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
 section { display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 16px; }
-.lead { font-size: 1.1rem; color: var(--muted); max-width: 34em; }
+.sec-head { display: flex; align-items: center; gap: 12px; }
+.badge {
+	width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+	display: grid; place-items: center;
+}
+.badge.blue { background: var(--blue-soft); color: var(--blue); }
+.badge.sun { background: var(--sun-soft); color: var(--sun-ink); }
+.badge.coral { background: var(--coral-soft); color: var(--coral-ink); }
+.badge.mint { background: var(--mint-soft); color: var(--mint-ink); }
+.kicker { font-size: 0.85rem; font-weight: 800; color: var(--muted); }
 
 /* hero */
-.hero { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+.hero {
+	background: var(--blue-soft); border-radius: 28px;
+	padding: 26px 22px; display: grid; grid-template-columns: 1fr 200px; gap: 16px; align-items: center;
+}
 .hero-text { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.ring {
-	width: 108px; height: 108px; border-radius: 50%;
-	border: 16px solid var(--blue); flex-shrink: 0;
+.hello { font-family: var(--display); font-weight: 500; font-size: 1.1rem; color: var(--blue); }
+.lead { font-size: 1.08rem; color: var(--muted); }
+.family { width: 100%; max-width: 200px; height: auto; }
+@media (max-width: 520px) {
+	.hero { grid-template-columns: 1fr; padding: 22px 18px; }
+	.family { max-width: 170px; margin: 0 auto; order: -1; }
 }
-@media (max-width: 480px) {
-	.hero { grid-template-columns: 1fr; }
-	.ring { width: 64px; height: 64px; border-width: 10px; order: -1; }
-}
+.trust { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.92rem; font-weight: 600; color: var(--muted); }
+.trust span { display: inline-flex; align-items: center; gap: 6px; }
+.trust svg.i { width: 18px; height: 18px; color: var(--blue); }
+
 .btn {
-	appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 700;
+	appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 800;
 	background: var(--blue); color: var(--on-blue);
-	padding: 14px 22px; border-radius: 12px; text-decoration: none;
+	padding: 14px 24px; border-radius: 999px; text-decoration: none;
 	display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+	transition: transform .15s ease;
 }
-.btn:focus-visible, .opt:focus-visible, .chip:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
-.btn.ghost { background: transparent; color: var(--blue); border: 2px solid var(--line); }
-.btn:disabled { opacity: 0.4; cursor: default; }
+.btn:hover { transform: translateY(-1px); }
+.btn:focus-visible, .opt:focus-visible, .chip:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.btn.ghost { background: var(--surface); color: var(--blue); box-shadow: inset 0 0 0 2px var(--line); }
+.btn:disabled { opacity: 0.45; cursor: default; transform: none; }
+
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
-	font-size: 0.92rem; padding: 7px 13px; border-radius: 999px; text-decoration: none;
-	background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+	font-size: 0.95rem; font-weight: 600; padding: 8px 14px; border-radius: 999px; text-decoration: none;
+	background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line);
 }
+
+/* cards */
+.card { background: var(--surface); border-radius: 24px; padding: 22px 20px; display: flex; flex-direction: column; gap: 18px; box-shadow: 0 1px 0 var(--line), 0 10px 30px -18px rgba(36, 98, 198, .35); }
 
 /* test */
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px 20px; display: flex; flex-direction: column; gap: 18px; }
-.progress { height: 6px; background: var(--blue-soft); border-radius: 99px; overflow: hidden; }
-.progress > div { height: 100%; background: var(--blue); width: 0; transition: width .3s ease; }
-.step-count { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.q-help { color: var(--muted); font-size: 0.95rem; }
+.progress { height: 10px; background: var(--blue-soft); border-radius: 99px; overflow: hidden; }
+.progress > div { height: 100%; background: var(--blue); border-radius: 99px; width: 0; transition: width .35s ease; }
+.step-count { font-size: 0.9rem; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.q-title { font-size: 1.35rem; }
+.q-help { color: var(--muted); font-size: 0.97rem; }
 .opts { display: flex; flex-direction: column; gap: 10px; }
 .opt {
-	appearance: none; font: inherit; text-align: left; cursor: pointer;
+	appearance: none; font: inherit; font-weight: 600; text-align: left; cursor: pointer;
 	background: var(--bg); color: var(--ink);
-	border: 2px solid var(--line); border-radius: 12px; padding: 14px 16px;
+	border: 2px solid transparent; border-radius: 16px; padding: 15px 18px;
+	display: flex; align-items: center; gap: 12px;
 	transition: border-color .15s, background .15s;
 }
+.opt::before {
+	content: ""; width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+	box-shadow: inset 0 0 0 2px var(--line); background: var(--surface);
+}
 .opt:hover { border-color: var(--blue); }
-.opt[aria-pressed="true"] { border-color: var(--blue); background: var(--blue-soft); font-weight: 700; }
-.nav-row { display: flex; justify-content: space-between; gap: 10px; }
+.opt[aria-pressed="true"] { border-color: var(--blue); background: var(--blue-soft); }
+.opt[aria-pressed="true"]::before { box-shadow: inset 0 0 0 6px var(--blue); }
+.nav-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.field label { font-weight: 700; font-size: 0.95rem; }
+.field label { font-weight: 800; font-size: 0.95rem; }
 .field input {
-	font: inherit; width: 100%; padding: 12px 14px; border-radius: 12px;
+	font: inherit; font-size: 1.1rem; width: 100%; padding: 13px 16px; border-radius: 14px;
 	border: 2px solid var(--line); background: var(--bg); color: var(--ink);
 }
-.bmi-out { font-size: 0.95rem; color: var(--muted); min-height: 1.5em; }
-.error { color: var(--risk); font-size: 0.95rem; }
+.bmi-out { font-weight: 700; color: var(--blue); min-height: 1.6em; }
+.error { color: var(--coral-ink); font-weight: 600; font-size: 0.95rem; }
 
 /* result */
-.result-head { display: flex; flex-direction: column; gap: 6px; }
-.score { font-family: var(--display); font-weight: 800; font-size: 3.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
-.score small { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
-.pill { align-self: flex-start; font-weight: 700; font-size: 0.92rem; padding: 6px 12px; border-radius: 999px; }
-.pill.ok { background: var(--ok-soft); color: var(--ok); }
-.pill.warn { background: var(--warn-soft); color: var(--warn); }
-.pill.risk { background: var(--risk-soft); color: var(--risk); }
+.result-top { display: flex; align-items: center; gap: 16px; }
+.face { width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0; }
+.face svg { width: 44px; height: 44px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.face.ok { background: var(--mint-soft); color: var(--mint-ink); }
+.face.warn { background: var(--sun-soft); color: var(--sun-ink); }
+.face.risk { background: var(--coral-soft); color: var(--coral-ink); }
+.result-title { font-size: 1.45rem; }
+.score-line { font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.pill { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: 0.95rem; padding: 8px 14px; border-radius: 999px; }
+.pill.ok { background: var(--mint-soft); color: var(--mint-ink); }
+.pill.warn { background: var(--sun-soft); color: var(--sun-ink); }
+.pill.risk { background: var(--coral-soft); color: var(--coral-ink); }
 .meter { display: flex; flex-direction: column; gap: 6px; }
-.meter-bar { position: relative; display: flex; height: 12px; border-radius: 99px; overflow: visible; }
-.meter-bar span { height: 100%; }
-.meter-bar span:first-child { border-radius: 99px 0 0 99px; }
-.meter-bar span:nth-last-child(2) { border-radius: 0 99px 99px 0; }
+.meter-bar { position: relative; display: flex; height: 14px; border-radius: 99px; }
+.meter-bar span.seg { height: 100%; }
+.meter-bar span.seg:first-child { border-radius: 99px 0 0 99px; }
+.meter-bar span.seg:last-of-type { border-radius: 0 99px 99px 0; }
 .marker {
-	position: absolute; top: -6px; width: 6px; height: 24px; margin-left: -3px;
-	background: var(--ink); border-radius: 3px; border: 2px solid var(--surface);
+	position: absolute; top: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px;
+	background: var(--surface); border: 5px solid var(--ink); border-radius: 50%;
 }
-.meter-labels { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.factors { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
-.factors li { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; border-bottom: 1px dashed var(--line); padding-bottom: 6px; }
-.factors b { font-variant-numeric: tabular-nums; }
-.note { background: var(--blue-soft); border-radius: 12px; padding: 14px 16px; font-size: 0.95rem; }
+.meter-labels { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+.factors { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.factors li { background: var(--bg); border-radius: 999px; padding: 6px 12px; font-size: 0.92rem; font-weight: 600; }
+.factors b { color: var(--coral-ink); font-variant-numeric: tabular-nums; }
+.note { background: var(--blue-soft); border-radius: 16px; padding: 14px 16px; font-size: 0.97rem; }
 
 /* symptoms */
 .symptoms { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.symptoms li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 0.97rem; min-width: 0; }
+.symptoms li {
+	background: var(--surface); border-radius: 18px; padding: 14px 16px; font-weight: 600; font-size: 0.98rem;
+	display: flex; gap: 10px; align-items: flex-start; min-width: 0; box-shadow: inset 0 0 0 1px var(--line);
+}
+.symptoms li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--coral); margin-top: 0.5em; flex-shrink: 0; }
 @media (max-width: 420px) { .symptoms { grid-template-columns: 1fr; } }
-.alert { border-left: 5px solid var(--risk); background: var(--risk-soft); border-radius: 0 12px 12px 0; padding: 14px 16px; font-size: 0.97rem; }
+.alert { display: flex; gap: 12px; align-items: flex-start; background: var(--coral-soft); color: var(--ink); border-radius: 18px; padding: 16px; font-size: 0.98rem; }
+.alert svg.i { color: var(--coral-ink); margin-top: 2px; }
 
 /* types */
-.types { display: flex; flex-direction: column; gap: 14px; }
-.type { display: flex; flex-direction: column; gap: 4px; padding-left: 14px; border-left: 3px solid var(--line); }
+.types { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.type { border-radius: 20px; padding: 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.type p { font-size: 0.95rem; }
+.type.t2 { background: var(--blue-soft); }
+.type.t1 { background: var(--sun-soft); }
+.type.tg { background: var(--coral-soft); }
+.type.tp { background: var(--mint-soft); }
+@media (max-width: 480px) { .types { grid-template-columns: 1fr; } }
 
-/* values table */
-.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
-table { border-collapse: collapse; width: 100%; min-width: 440px; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
-th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--line); }
-tr:last-child td { border-bottom: 0; }
-th { font-weight: 700; font-size: 0.85rem; color: var(--muted); }
-td.ok { color: var(--ok); font-weight: 700; }
-td.warn { color: var(--warn); font-weight: 700; }
-td.risk { color: var(--risk); font-weight: 700; }
+/* traffic light values */
+.lights { display: flex; flex-direction: column; gap: 14px; }
+.light-row { background: var(--surface); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: inset 0 0 0 1px var(--line); }
+.light-row h3 small { display: block; font-family: var(--body); font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.light { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.light div { border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column; min-width: 0; font-variant-numeric: tabular-nums; }
+.light span { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; }
+.light b { font-size: 0.98rem; }
+.light .g { background: var(--mint-soft); color: var(--mint-ink); }
+.light .y { background: var(--sun-soft); color: var(--sun-ink); }
+.light .r { background: var(--coral-soft); color: var(--coral-ink); }
 
 /* myth game */
-.statement { font-family: var(--display); font-weight: 600; font-size: 1.35rem; line-height: 1.3; }
+.statement { font-family: var(--display); font-weight: 500; font-size: 1.4rem; line-height: 1.3; }
 .mf-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.feedback { border-radius: 12px; padding: 14px 16px; font-size: 0.97rem; display: flex; flex-direction: column; gap: 4px; }
-.feedback.right { background: var(--ok-soft); }
-.feedback.wrong { background: var(--risk-soft); }
-.feedback strong { font-size: 1.05rem; }
+.btn.myth { background: var(--coral-soft); color: var(--coral-ink); }
+.btn.real { background: var(--mint-soft); color: var(--mint-ink); }
+.feedback { border-radius: 16px; padding: 14px 16px; font-size: 0.98rem; display: flex; flex-direction: column; gap: 4px; }
+.feedback.right { background: var(--mint-soft); }
+.feedback.wrong { background: var(--coral-soft); }
+.feedback strong { font-family: var(--display); font-weight: 600; font-size: 1.1rem; }
+.big-score { font-family: var(--display); font-weight: 600; font-size: 3rem; line-height: 1; color: var(--blue); font-variant-numeric: tabular-nums; }
+.big-score small { font-size: 1.1rem; color: var(--muted); font-weight: 500; }
 
 /* tips */
-.tips { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
-.tips li { display: flex; flex-direction: column; gap: 2px; }
-.tips b { font-family: var(--display); font-weight: 600; font-size: 1.05rem; }
+.tips { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.tips li { background: var(--surface); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 8px; min-width: 0; box-shadow: inset 0 0 0 1px var(--line); }
+.tips b { font-family: var(--display); font-weight: 500; font-size: 1.08rem; line-height: 1.25; }
+.tips span.muted { font-size: 0.94rem; }
+.tips .badge { width: 42px; height: 42px; }
+@media (max-width: 480px) { .tips { grid-template-columns: 1fr; } }
 
 .rule15 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.rule15 div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.rule15 b { font-family: var(--display); font-size: 1.6rem; color: var(--blue); line-height: 1; }
+.rule15 div { background: var(--sun-soft); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.rule15 b { font-family: var(--display); font-weight: 600; font-size: 1.9rem; color: var(--sun-ink); line-height: 1; }
+.rule15 span { font-size: 0.95rem; }
 @media (max-width: 480px) { .rule15 { grid-template-columns: 1fr; } }
 
-footer { border-top: 1px solid var(--line); padding-top: 20px; font-size: 0.88rem; color: var(--muted); display: flex; flex-direction: column; gap: 10px; }
+/* share */
+.share { background: var(--mint-soft); border-radius: 28px; padding: 24px 20px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.share .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn.wa { background: var(--mint); color: var(--on-blue); }
+.copied { font-weight: 700; color: var(--mint-ink); font-size: 0.95rem; min-height: 1.4em; }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
-html { scroll-behavior: smooth; }
+footer { font-size: 0.88rem; color: var(--muted); display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+	<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+	<symbol id="i-lock" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></symbol>
+	<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20z"/></symbol>
+	<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3c3.6 4.6 6 7.7 6 10.6A6 6 0 0 1 6 13.6C6 10.7 8.4 7.6 12 3z"/></symbol>
+	<symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3l9-16z"/><path d="M12 10v4M12 17.5v.01"/></symbol>
+	<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></symbol>
+	<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/><path d="M7 15h10"/></symbol>
+	<symbol id="i-game" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="5"/><path d="M8 11v3M6.5 12.5h3M15 12h.01M17 14h.01"/></symbol>
+	<symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4.5" r="1.8"/><path d="M10 21l2.2-6 2.8 3v3M8 12.5l2.5-4.5 3.5 1 2 3.5M10.5 8L9 14"/></symbol>
+	<symbol id="i-scale" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0M12 10l1.5-2"/></symbol>
+	<symbol id="i-plate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></symbol>
+	<symbol id="i-glass" viewBox="0 0 24 24"><path d="M6 3h12l-1.6 17a1 1 0 0 1-1 .9H8.6a1 1 0 0 1-1-.9L6 3z"/><path d="M7 9h10"/></symbol>
+	<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+	<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M9 15l2 2 4-4"/></symbol>
+	<symbol id="i-candy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M7.5 12L3 9v6l4.5-3zM16.5 12L21 9v6l-4.5-3z"/></symbol>
+	<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
+</svg>
 
 <div class="wrap">
 
 	<header class="hero">
 		<div class="hero-text">
-			<span class="eyebrow">Información de salud · 2 minutos</span>
+			<span class="hello">¡Hola! Cuidarte es más fácil de lo que parece</span>
 			<h1>¿Podrías tener diabetes y no saberlo?</h1>
-			<p class="lead">La diabetes tipo 2 puede avanzar durante años sin dar síntomas. Respondé 9 preguntas cortas y conocé tu riesgo para los próximos 10 años.</p>
-			<div><a class="btn" href="#test">Hacer el test</a></div>
+			<p class="lead">La diabetes tipo 2 puede avanzar durante años sin dar síntomas. Respondé unas preguntas cortas y conocé tu riesgo.</p>
+			<div><a class="btn" href="#test">Hacer el test gratis</a></div>
+			<div class="trust">
+				<span><svg class="i"><use href="#i-clock"/></svg>2 minutos</span>
+				<span><svg class="i"><use href="#i-lock"/></svg>Anónimo</span>
+				<span><svg class="i"><use href="#i-heart"/></svg>Usado por médicos</span>
+			</div>
 		</div>
-		<div class="ring" aria-hidden="true"></div>
+		<svg class="family" viewBox="0 0 220 180" role="img" aria-label="Ilustración de una familia dentro del círculo azul de la diabetes">
+			<circle cx="110" cy="96" r="74" style="fill:none;stroke:var(--blue);stroke-width:14;opacity:.9"/>
+			<ellipse cx="110" cy="168" rx="80" ry="7" style="fill:var(--blue);opacity:.12"/>
+			<path d="M42 168v-48a28 28 0 0 1 56 0v48z" style="fill:var(--blue)"/>
+			<circle cx="70" cy="68" r="19" style="fill:var(--blue)"/>
+			<path d="M122 168v-52a28 28 0 0 1 56 0v52z" style="fill:var(--coral)"/>
+			<circle cx="150" cy="62" r="19" style="fill:var(--coral)"/>
+			<path d="M90 168v-30a20 20 0 0 1 40 0v30z" style="fill:var(--sun);stroke:var(--blue-soft);stroke-width:4"/>
+			<circle cx="110" cy="104" r="14" style="fill:var(--sun);stroke:var(--blue-soft);stroke-width:4"/>
+			<path d="M110 80s-9-5.4-9-11.6a5 5 0 0 1 9-2.8 5 5 0 0 1 9 2.8c0 6.2-9 11.6-9 11.6z" style="fill:var(--coral)"/>
+		</svg>
 	</header>
 
 	<nav class="chips" aria-label="Secciones">
@@ -212,18 +313,18 @@ html { scroll-behavior: smooth; }
 	</nav>
 
 	<section id="test">
-		<div>
-			<span class="eyebrow">Test FINDRISC</span>
-			<h2>¿Cuál es tu riesgo?</h2>
+		<div class="sec-head">
+			<span class="badge blue"><svg class="i"><use href="#i-heart"/></svg></span>
+			<div><span class="kicker">Test FINDRISC</span><h2>¿Cuál es tu riesgo?</h2></div>
 		</div>
 		<p class="muted">Es un cuestionario validado que usan médicos de todo el mundo. Es para personas adultas que no tienen diagnóstico de diabetes.</p>
-		<div class="panel" id="quiz" aria-live="polite"></div>
+		<div class="card" id="quiz" aria-live="polite"></div>
 	</section>
 
 	<section id="sintomas">
-		<div>
-			<span class="eyebrow">Señales de alerta</span>
-			<h2>Consultá aunque el test te dé bajo si tenés…</h2>
+		<div class="sec-head">
+			<span class="badge coral"><svg class="i"><use href="#i-alert"/></svg></span>
+			<div><span class="kicker">Señales de alerta</span><h2>Consultá aunque el test te dé bajo si tenés…</h2></div>
 		</div>
 		<ul class="symptoms">
 			<li>Mucha sed todo el día</li>
@@ -235,89 +336,116 @@ html { scroll-behavior: smooth; }
 			<li>Heridas que tardan en cicatrizar</li>
 			<li>Hormigueo en pies o manos</li>
 		</ul>
-		<div class="alert"><b>Emergencia:</b> si alguien con diabetes está confundido, tiene vómitos, respira muy rápido o tiene aliento con olor a fruta, llamá al <b>911</b>.</div>
+		<div class="alert"><svg class="i"><use href="#i-alert"/></svg><p><b>Emergencia:</b> si alguien con diabetes está confundido, tiene vómitos, respira muy rápido o tiene aliento con olor a fruta, llamá al <b>911</b>.</p></div>
 	</section>
 
 	<section id="que-es">
-		<div>
-			<span class="eyebrow">Lo básico</span>
-			<h2>¿Qué es la diabetes?</h2>
+		<div class="sec-head">
+			<span class="badge blue"><svg class="i"><use href="#i-drop"/></svg></span>
+			<div><span class="kicker">Lo básico</span><h2>¿Qué es la diabetes?</h2></div>
 		</div>
-		<p>Es cuando hay demasiada glucosa (azúcar) en la sangre, porque el cuerpo no produce suficiente insulina o no la usa bien. Con el tiempo, el exceso de glucosa daña los vasos sanguíneos, los ojos, los riñones, los nervios y el corazón.</p>
+		<p>Es cuando hay demasiada glucosa (azúcar) en la sangre, porque el cuerpo no produce suficiente insulina o no la usa bien. Con el tiempo, ese exceso daña los vasos sanguíneos, los ojos, los riñones, los nervios y el corazón.</p>
 		<div class="types">
-			<div class="type">
+			<div class="type t2">
 				<h3>Tipo 2</h3>
-				<p class="muted">La más común, alrededor de 9 de cada 10 casos. Se relaciona con la genética, el sobrepeso y el sedentarismo. Muchas veces se puede prevenir o retrasar.</p>
+				<p>La más común, alrededor de 9 de cada 10 casos. Se relaciona con la genética, el sobrepeso y el sedentarismo. Muchas veces se puede prevenir o retrasar.</p>
 			</div>
-			<div class="type">
+			<div class="type t1">
 				<h3>Tipo 1</h3>
-				<p class="muted">El sistema inmune destruye las células que producen insulina. Suele aparecer en niños y jóvenes, no se puede prevenir y se trata con insulina.</p>
+				<p>El sistema inmune destruye las células que producen insulina. Suele aparecer en niños y jóvenes, no se puede prevenir y se trata con insulina.</p>
 			</div>
-			<div class="type">
+			<div class="type tg">
 				<h3>Gestacional</h3>
-				<p class="muted">Aparece durante el embarazo. Suele irse después del parto, pero aumenta el riesgo de tener diabetes tipo 2 más adelante.</p>
+				<p>Aparece durante el embarazo. Suele irse después del parto, pero aumenta el riesgo de tener diabetes tipo 2 más adelante.</p>
 			</div>
-			<div class="type">
+			<div class="type tp">
 				<h3>Prediabetes</h3>
-				<p class="muted">La glucosa está más alta de lo normal, pero todavía no llega a diabetes. Es el mejor momento para actuar, porque en muchos casos se puede revertir.</p>
+				<p>La glucosa está más alta de lo normal, pero todavía no llega a diabetes. Es el mejor momento para actuar: en muchos casos se puede revertir.</p>
 			</div>
 		</div>
 	</section>
 
 	<section id="valores">
-		<div>
-			<span class="eyebrow">Análisis de sangre</span>
-			<h2>Valores de referencia</h2>
+		<div class="sec-head">
+			<span class="badge mint"><svg class="i"><use href="#i-flask"/></svg></span>
+			<div><span class="kicker">Tu análisis de sangre</span><h2>El semáforo de la glucosa</h2></div>
 		</div>
-		<div class="table-scroll">
-			<table>
-				<thead>
-					<tr><th>Análisis</th><th>Normal</th><th>Prediabetes</th><th>Diabetes</th></tr>
-				</thead>
-				<tbody>
-					<tr><td>Glucemia en ayunas</td><td class="ok">menos de 100 mg/dL</td><td class="warn">100 a 125 mg/dL</td><td class="risk">126 mg/dL o más</td></tr>
-					<tr><td>Hemoglobina glicosilada (HbA1c)</td><td class="ok">menos de 5,7 %</td><td class="warn">5,7 a 6,4 %</td><td class="risk">6,5 % o más</td></tr>
-					<tr><td>Glucemia 2 h después de tomar glucosa (PTOG)</td><td class="ok">menos de 140 mg/dL</td><td class="warn">140 a 199 mg/dL</td><td class="risk">200 mg/dL o más</td></tr>
-				</tbody>
-			</table>
+		<div class="lights">
+			<div class="light-row">
+				<h3>Glucemia en ayunas <small>Con 8 horas sin comer</small></h3>
+				<div class="light">
+					<div class="g"><span>Normal</span><b>menos de 100</b></div>
+					<div class="y"><span>Prediabetes</span><b>100 a 125</b></div>
+					<div class="r"><span>Diabetes</span><b>126 o más</b></div>
+				</div>
+			</div>
+			<div class="light-row">
+				<h3>Hemoglobina glicosilada (HbA1c) <small>Promedio de los últimos 3 meses</small></h3>
+				<div class="light">
+					<div class="g"><span>Normal</span><b>menos de 5,7 %</b></div>
+					<div class="y"><span>Prediabetes</span><b>5,7 a 6,4 %</b></div>
+					<div class="r"><span>Diabetes</span><b>6,5 % o más</b></div>
+				</div>
+			</div>
+			<div class="light-row">
+				<h3>Curva de glucosa (PTOG) <small>2 horas después de tomar glucosa</small></h3>
+				<div class="light">
+					<div class="g"><span>Normal</span><b>menos de 140</b></div>
+					<div class="y"><span>Prediabetes</span><b>140 a 199</b></div>
+					<div class="r"><span>Diabetes</span><b>200 o más</b></div>
+				</div>
+			</div>
 		</div>
-		<p class="muted">El diagnóstico lo hace siempre un médico y normalmente requiere repetir el análisis. Un solo valor alto no alcanza para confirmarlo.</p>
+		<p class="muted">Los valores de glucemia están en mg/dL. El diagnóstico lo hace siempre un médico y normalmente requiere repetir el análisis: un solo valor alto no alcanza para confirmarlo.</p>
 	</section>
 
 	<section id="juego">
-		<div>
-			<span class="eyebrow">Juego</span>
-			<h2>¿Mito o realidad?</h2>
+		<div class="sec-head">
+			<span class="badge sun"><svg class="i"><use href="#i-game"/></svg></span>
+			<div><span class="kicker">Juego</span><h2>¿Mito o realidad?</h2></div>
 		</div>
-		<div class="panel" id="game" aria-live="polite"></div>
+		<div class="card" id="game" aria-live="polite"></div>
 	</section>
 
 	<section id="prevencion">
-		<div>
-			<span class="eyebrow">Prevención</span>
-			<h2>Qué podés hacer desde hoy</h2>
+		<div class="sec-head">
+			<span class="badge mint"><svg class="i"><use href="#i-walk"/></svg></span>
+			<div><span class="kicker">Prevención</span><h2>Lo que podés hacer desde hoy</h2></div>
 		</div>
 		<ul class="tips">
-			<li><b>Moverte 30 minutos al día</b><span class="muted">Caminar rápido cuenta. La meta es llegar a 150 minutos por semana.</span></li>
-			<li><b>Bajar un poco de peso, si tenés sobrepeso</b><span class="muted">Perder entre el 5 % y el 7 % del peso reduce mucho el riesgo de diabetes tipo 2.</span></li>
-			<li><b>Medio plato de verduras</b><span class="muted">Llená la mitad del plato con verduras, un cuarto con proteína y un cuarto con harinas o cereales.</span></li>
-			<li><b>Agua en lugar de refrescos y jugos</b><span class="muted">Las bebidas azucaradas son una de las fuentes de azúcar más fáciles de dejar.</span></li>
-			<li><b>Dormir bien y no fumar</b><span class="muted">El mal descanso y el cigarrillo también aumentan el riesgo.</span></li>
-			<li><b>Hacerte controles</b><span class="muted">A partir de los 35 años, o antes si tenés factores de riesgo, pedí una glucemia en tus controles de rutina.</span></li>
+			<li><span class="badge mint"><svg class="i"><use href="#i-walk"/></svg></span><b>Moverte 30 minutos al día</b><span class="muted">Caminar rápido cuenta. La meta es llegar a 150 minutos por semana.</span></li>
+			<li><span class="badge blue"><svg class="i"><use href="#i-scale"/></svg></span><b>Bajar un poco de peso, si tenés sobrepeso</b><span class="muted">Perder entre el 5 % y el 7 % del peso reduce mucho el riesgo.</span></li>
+			<li><span class="badge sun"><svg class="i"><use href="#i-plate"/></svg></span><b>Medio plato de verduras</b><span class="muted">La mitad del plato con verduras, un cuarto con proteína y un cuarto con harinas.</span></li>
+			<li><span class="badge blue"><svg class="i"><use href="#i-glass"/></svg></span><b>Agua en lugar de refrescos</b><span class="muted">Las bebidas azucaradas son una de las fuentes de azúcar más fáciles de dejar.</span></li>
+			<li><span class="badge coral"><svg class="i"><use href="#i-moon"/></svg></span><b>Dormir bien y no fumar</b><span class="muted">El mal descanso y el cigarrillo también aumentan el riesgo.</span></li>
+			<li><span class="badge mint"><svg class="i"><use href="#i-cal"/></svg></span><b>Hacerte controles</b><span class="muted">Desde los 35 años, o antes si tenés factores de riesgo, pedí una glucemia en tus controles.</span></li>
 		</ul>
 	</section>
 
 	<section id="hipoglucemia">
-		<div>
-			<span class="eyebrow">Si convivís con diabetes</span>
-			<h2>La regla del 15 para una baja de azúcar</h2>
+		<div class="sec-head">
+			<span class="badge sun"><svg class="i"><use href="#i-candy"/></svg></span>
+			<div><span class="kicker">Si convivís con diabetes</span><h2>La regla del 15 para una baja de azúcar</h2></div>
 		</div>
-		<p class="muted">Si la glucosa está por debajo de 70 mg/dL o aparecen temblores, sudor frío, mareo o confusión:</p>
+		<p class="muted">Si la glucosa está por debajo de 70 mg/dL, o aparecen temblores, sudor frío, mareo o confusión:</p>
 		<div class="rule15">
 			<div><b>15 g</b><span>de azúcar rápida: medio vaso de jugo o 3 cucharaditas de azúcar en agua.</span></div>
 			<div><b>15 min</b><span>de espera, en reposo.</span></div>
 			<div><b>Medir</b><span>otra vez. Si sigue baja, repetir. Si no mejora, llamar al 911.</span></div>
 		</div>
+	</section>
+
+	<section class="share" id="compartir">
+		<div class="sec-head">
+			<span class="badge mint" style="background:var(--surface)"><svg class="i"><use href="#i-share"/></svg></span>
+			<h2>Compartila con tu familia</h2>
+		</div>
+		<p>La diabetes tipo 2 suele venir de familia. Si alguien que querés tiene factores de riesgo, mandale el test: son 2 minutos.</p>
+		<div class="btns">
+			<a class="btn wa" id="wa" href="https://wa.me/?text=Hac%C3%A9%20este%20test%20de%202%20minutos%20para%20saber%20tu%20riesgo%20de%20diabetes%3A%20https%3A%2F%2Fc4snchz.github.io%2Fdiabetes%2F" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+			<button type="button" class="btn ghost" id="copy">Copiar link</button>
+		</div>
+		<p class="copied" id="copied" aria-live="polite"></p>
 	</section>
 
 	<footer>
@@ -329,6 +457,8 @@ html { scroll-behavior: smooth; }
 
 <script>
 (function () {
+	var SITE = 'https://c4snchz.github.io/diabetes/';
+
 	/* ---------- Test FINDRISC ---------- */
 	var quiz = document.getElementById('quiz');
 	var answers = {};
@@ -380,6 +510,12 @@ html { scroll-behavior: smooth; }
 		verduras: 'Pocas frutas y verduras', presion: 'Presión alta', glucosa: 'Glucosa alta alguna vez', familia: 'Antecedentes familiares'
 	};
 
+	var faces = {
+		ok: '<svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18"/><path d="M15 25c2 3.5 4.5 5 7 5s5-1.5 7-5M16 17.5v.01M28 17.5v.01"/></svg>',
+		warn: '<svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18"/><path d="M15 28h14M16 17.5v.01M28 17.5v.01"/></svg>',
+		risk: '<svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="18"/><path d="M22 12v12M22 30v.01"/></svg>'
+	};
+
 	function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
 	function bmiPoints(bmi) { return bmi < 25 ? 0 : bmi <= 30 ? 1 : 3; }
@@ -389,7 +525,7 @@ html { scroll-behavior: smooth; }
 		var pct = Math.round((step / steps.length) * 100);
 		var html = '<div class="progress" aria-hidden="true"><div style="width:' + pct + '%"></div></div>' +
 			'<span class="step-count">Pregunta ' + (step + 1) + ' de ' + steps.length + '</span>' +
-			'<h3 id="q-title">' + esc(s.title) + '</h3>' +
+			'<h3 class="q-title" id="q-title">' + esc(s.title) + '</h3>' +
 			(s.help ? '<p class="q-help">' + esc(s.help) + '</p>' : '');
 
 		if (s.type === 'bmi') {
@@ -453,15 +589,15 @@ html { scroll-behavior: smooth; }
 	}
 
 	function category(score) {
-		if (score < 7) return { k: 'ok', name: 'Riesgo bajo', risk: '1 de cada 100',
+		if (score < 7) return { k: 'ok', title: '¡Buenas noticias!', name: 'Riesgo bajo', risk: '1 de cada 100',
 			advice: 'Seguí así. Moverte, comer verduras todos los días y mantener tu peso es la mejor prevención. Podés repetir el test dentro de unos años.' };
-		if (score <= 11) return { k: 'ok', name: 'Riesgo ligeramente elevado', risk: '1 de cada 25',
+		if (score <= 11) return { k: 'ok', title: 'Vas bien, con algo para mejorar', name: 'Riesgo ligeramente elevado', risk: '1 de cada 25',
 			advice: 'Tu riesgo es algo mayor que el promedio. Pequeños cambios en la alimentación y la actividad física pueden bajarlo. En tu próximo control, pedí una glucemia.' };
-		if (score <= 14) return { k: 'warn', name: 'Riesgo moderado', risk: '1 de cada 6',
+		if (score <= 14) return { k: 'warn', title: 'Conviene prestarle atención', name: 'Riesgo moderado', risk: '1 de cada 6',
 			advice: 'Te recomendamos consultar con tu médico y pedir un análisis de glucemia. Con cambios de hábitos, el riesgo se puede reducir bastante.' };
-		if (score <= 20) return { k: 'risk', name: 'Riesgo alto', risk: '1 de cada 3',
+		if (score <= 20) return { k: 'risk', title: 'Es importante que consultes', name: 'Riesgo alto', risk: '1 de cada 3',
 			advice: 'Consultá con tu médico en las próximas semanas y pedí una glucemia en ayunas o una hemoglobina glicosilada (HbA1c). Podrías tener prediabetes o diabetes sin síntomas.' };
-		return { k: 'risk', name: 'Riesgo muy alto', risk: '1 de cada 2',
+		return { k: 'risk', title: 'Consultá lo antes posible', name: 'Riesgo muy alto', risk: '1 de cada 2',
 			advice: 'Consultá con tu médico lo antes posible y pedí un análisis de sangre. Es posible que ya tengas diabetes sin saberlo, y detectarla temprano evita complicaciones.' };
 	}
 
@@ -475,31 +611,30 @@ html { scroll-behavior: smooth; }
 		factors.sort(function (a, b) { return b.p - a.p; });
 		var c = category(score);
 		var consult = score >= 12;
-		var segs = [[7, 'var(--ok)'], [5, 'var(--ok)'], [3, 'var(--warn)'], [6, 'var(--risk)'], [6, 'var(--risk)']];
-		var segHtml = segs.map(function (s, i) {
-			return '<span style="width:' + (s[0] / 27 * 100) + '%;background:' + s[1] + ';opacity:' + (i % 2 ? 1 : 0.6) + '"></span>';
+		var segs = [[7, 'var(--mint)'], [5, 'var(--mint-ink)'], [3, 'var(--sun)'], [6, 'var(--coral)'], [6, 'var(--coral-ink)']];
+		var segHtml = segs.map(function (s) {
+			return '<span class="seg" style="width:' + (s[0] / 27 * 100) + '%;background:' + s[1] + '"></span>';
 		}).join('');
 		var markerLeft = ((score + 0.5) / 27) * 100;
 
 		var html = '<div class="progress" aria-hidden="true"><div style="width:100%"></div></div>' +
-			'<div class="result-head"><span class="eyebrow">Tu resultado</span>' +
-			'<div class="score">' + score + ' <small>de 26 puntos</small></div></div>' +
-			'<span class="pill ' + c.k + '">' + c.name + '</span>' +
+			'<div class="result-top"><div class="face ' + c.k + '" aria-hidden="true">' + faces[c.k] + '</div>' +
+			'<div><h3 class="result-title">' + c.title + '</h3><p class="score-line">' + score + ' de 26 puntos · ' + c.name + '</p></div></div>' +
 			'<div class="meter"><div class="meter-bar">' + segHtml + '<span class="marker" style="left:' + markerLeft + '%"></span></div>' +
-			'<div class="meter-labels"><span>0</span><span>7</span><span>12</span><span>15</span><span>21</span><span>26</span></div></div>' +
+			'<div class="meter-labels"><span>Bajo</span><span>Moderado</span><span>Muy alto</span></div></div>' +
 			'<p>Se estima que <b>' + c.risk + '</b> personas con este puntaje desarrollan diabetes tipo 2 en los próximos 10 años.</p>' +
 			'<p>' + c.advice + '</p>' +
-			'<span class="pill ' + (consult ? 'risk' : 'ok') + '">' + (consult ? 'Recomendado: consultar con tu médico' : 'Por ahora no hace falta una consulta por esto') + '</span>';
+			'<span class="pill ' + (consult ? 'risk' : 'ok') + '">' + (consult ? 'Recomendado: consultar con tu médico' : 'Por ahora no hace falta consultar por esto') + '</span>';
 
 		if (factors.length) {
-			html += '<div><h3 style="margin-bottom:8px">Lo que más suma en tu caso</h3><ul class="factors">' +
-				factors.map(function (f) { return '<li><span>' + f.name + '</span><b>+' + f.p + '</b></li>'; }).join('') + '</ul></div>';
+			html += '<div><p style="font-weight:800;margin-bottom:8px">Lo que más suma en tu caso</p><ul class="factors">' +
+				factors.map(function (f) { return '<li>' + f.name + ' <b>+' + f.p + '</b></li>'; }).join('') + '</ul></div>';
 		}
 		if (answers.cintura && answers.cintura.value === 'nose') {
 			html += '<p class="note">No indicaste la medida de tu cintura, así que tu riesgo real puede ser mayor. Medila cuando puedas y repetí el test.</p>';
 		}
 		html += '<p class="note">Si tenés alguno de los síntomas de abajo, consultá aunque tu resultado sea bajo.</p>' +
-			'<div class="nav-row"><button type="button" class="btn ghost" id="restart">Repetir el test</button><a class="btn" href="#sintomas">Ver síntomas</a></div>';
+			'<div class="nav-row"><button type="button" class="btn ghost" id="restart">Repetir el test</button><a class="btn" href="#compartir">Compartir con mi familia</a></div>';
 		quiz.innerHTML = html;
 		document.getElementById('restart').addEventListener('click', function () { answers = {}; step = 0; renderStep(); });
 		quiz.scrollIntoView({ block: 'start' });
@@ -534,9 +669,10 @@ html { scroll-behavior: smooth; }
 	function renderCard() {
 		answered = false;
 		var c = cards[gi];
-		game.innerHTML = '<span class="step-count">' + (gi + 1) + ' de ' + cards.length + ' · ' + hits + ' aciertos</span>' +
+		game.innerHTML = '<div class="progress" aria-hidden="true"><div style="width:' + Math.round(gi / cards.length * 100) + '%;background:var(--sun)"></div></div>' +
+			'<span class="step-count" id="gcount">' + (gi + 1) + ' de ' + cards.length + ' · ' + hits + ' aciertos</span>' +
 			'<p class="statement">“' + esc(c.s) + '”</p>' +
-			'<div class="mf-buttons"><button type="button" class="btn ghost" data-a="0">Mito</button><button type="button" class="btn ghost" data-a="1">Realidad</button></div>' +
+			'<div class="mf-buttons"><button type="button" class="btn myth" data-a="0">Mito</button><button type="button" class="btn real" data-a="1">Realidad</button></div>' +
 			'<div id="fb"></div>';
 		game.querySelectorAll('[data-a]').forEach(function (b) {
 			b.addEventListener('click', function () { answer(b.dataset.a === '1'); });
@@ -552,9 +688,9 @@ html { scroll-behavior: smooth; }
 		game.querySelectorAll('[data-a]').forEach(function (b) { b.disabled = true; });
 		var last = gi === cards.length - 1;
 		document.getElementById('fb').innerHTML =
-			'<div class="feedback ' + (right ? 'right' : 'wrong') + '"><strong>' + (right ? '¡Correcto! ' : 'No. ') + 'Es ' + (c.real ? 'realidad' : 'mito') + '.</strong><span>' + esc(c.why) + '</span></div>' +
-			'<div class="nav-row" style="margin-top:12px"><span></span><button type="button" class="btn" id="gnext">' + (last ? 'Ver resultado' : 'Siguiente') + '</button></div>';
-		game.querySelector('.step-count').textContent = (gi + 1) + ' de ' + cards.length + ' · ' + hits + ' aciertos';
+			'<div class="feedback ' + (right ? 'right' : 'wrong') + '"><strong>' + (right ? '¡Correcto! ' : 'Casi… ') + 'Es ' + (c.real ? 'realidad' : 'mito') + '.</strong><span>' + esc(c.why) + '</span></div>' +
+			'<div class="nav-row" style="margin-top:12px;justify-content:flex-end"><button type="button" class="btn" id="gnext">' + (last ? 'Ver mi resultado' : 'Siguiente') + '</button></div>';
+		document.getElementById('gcount').textContent = (gi + 1) + ' de ' + cards.length + ' · ' + hits + ' aciertos';
 		document.getElementById('gnext').addEventListener('click', function () {
 			if (last) { renderGameEnd(); } else { gi++; renderCard(); }
 		});
@@ -565,14 +701,24 @@ html { scroll-behavior: smooth; }
 		var msg = hits === cards.length ? '¡Perfecto! Sabés mucho sobre diabetes.'
 			: hits >= 6 ? 'Muy bien. Ya conocés lo más importante.'
 			: 'Hay varios mitos muy comunes. Compartí el juego para que más gente los conozca.';
-		game.innerHTML = '<span class="eyebrow">Resultado</span>' +
-			'<div class="score">' + hits + ' <small>de ' + cards.length + ' aciertos</small></div>' +
+		game.innerHTML = '<span class="kicker">Tu resultado</span>' +
+			'<div class="big-score">' + hits + ' <small>de ' + cards.length + ' aciertos</small></div>' +
 			'<p>' + msg + '</p>' +
-			'<div><button type="button" class="btn ghost" id="greplay">Jugar de nuevo</button></div>';
+			'<div class="nav-row"><button type="button" class="btn ghost" id="greplay">Jugar de nuevo</button><a class="btn" href="#compartir">Desafiar a mi familia</a></div>';
 		document.getElementById('greplay').addEventListener('click', function () { gi = 0; hits = 0; renderCard(); });
 	}
 
 	renderCard();
+
+	/* ---------- Compartir ---------- */
+	var copied = document.getElementById('copied');
+	document.getElementById('copy').addEventListener('click', function () {
+		var done = function () { copied.textContent = 'Link copiado: ' + SITE; };
+		var fail = function () { copied.textContent = 'Copiá este link: ' + SITE; };
+		try {
+			navigator.clipboard.writeText(SITE).then(done, fail);
+		} catch (e) { fail(); }
+	});
 })();
 </script>
 </body>
