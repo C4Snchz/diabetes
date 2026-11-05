@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Panel de Datos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Lexend:wght@400;600&family=Young+Serif&display=swap">
+<style>
+/* Team panel: same "frutería" tokens as index.html; login sheet, then summary bars + full anonymous tables */
+:root {
+	--paper: #f6f7f1;
+	--white: #ffffff;
+	--ink: #2b1e3f;
+	--soft: #62577a;
+	--rule: #e3dfe9;
+	--plum: #5b3a8c;
+	--plum-tint: #ece6f5;
+	--tangerine: #ff8a3d;
+	--leaf: #3e9b6b;
+	--lemon: #ffd54a;
+	--berry: #d6345b;
+	--berry-ink: #ae2148;
+	--serif: "Young Serif", Georgia, "Times New Roman", serif;
+	--sans: "Lexend", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+	--hand: "Caveat", "Bradley Hand", "Segoe Print", cursive;
+	color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+[hidden] { display: none !important; }
+body {
+	background: var(--paper); color: var(--ink);
+	font-family: var(--sans); font-size: 17px; line-height: 1.6;
+	-webkit-font-smoothing: antialiased;
+}
+.wrap {
+	max-width: 760px; margin: 0 auto;
+	padding-left: max(16px, env(safe-area-inset-left, 0px));
+	padding-right: max(16px, env(safe-area-inset-right, 0px));
+	padding-block: 22px 40px;
+	display: flex; flex-direction: column; gap: 40px;
+}
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.12; margin: 0; }
+h1 { font-size: clamp(2rem, 8vw, 2.6rem); }
+h2 { font-size: 1.6rem; }
+h3 { font-family: var(--sans); font-weight: 600; font-size: 1.05rem; margin-bottom: 12px; }
+p { margin: 0; }
+a { color: var(--plum); }
+.soft { color: var(--soft); }
+.note { font-size: 0.93rem; color: var(--soft); }
+section { display: flex; flex-direction: column; gap: 18px; }
+
+.btn {
+	appearance: none; cursor: pointer; font: inherit; font-weight: 600; font-size: 1rem;
+	background: var(--plum); color: var(--white);
+	border: 2px solid var(--ink); border-radius: 14px;
+	padding: 12px 20px; text-decoration: none;
+	display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+	box-shadow: 4px 4px 0 var(--ink);
+	transition: transform .12s ease, box-shadow .12s ease;
+}
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+.btn.light { background: var(--white); color: var(--ink); }
+.btn.leaf { background: var(--leaf); }
+.btn:disabled { opacity: .5; cursor: progress; }
+.btn:focus-visible, input:focus-visible, .tab:focus-visible { outline: 3px solid var(--tangerine); outline-offset: 3px; }
+
+.top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.top .tag { font-family: var(--hand); font-size: 1.5rem; color: var(--tangerine); line-height: 1; display: block; transform: rotate(-3deg); transform-origin: left; margin-bottom: 4px; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* login */
+.sheet {
+	background: var(--white); border: 2px solid var(--ink); border-radius: 22px;
+	box-shadow: 6px 6px 0 var(--plum);
+	padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; max-width: 420px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-weight: 600; font-size: 0.95rem; }
+.field input {
+	font: inherit; font-size: 1.1rem; width: 100%; padding: 12px 14px; border-radius: 14px;
+	border: 2px solid var(--rule); background: var(--white); color: var(--ink);
+}
+.field input:focus { border-color: var(--plum); }
+.error { color: var(--berry-ink); font-weight: 600; font-size: 0.95rem; min-height: 1.4em; }
+
+/* menu */
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 12px; }
+.tab {
+	appearance: none; font: inherit; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+	background: none; color: var(--soft); border: 2px solid transparent; border-radius: 99px; padding: 6px 16px;
+}
+.tab[aria-selected="true"] { background: var(--plum-tint); color: var(--plum); border-color: var(--plum); }
+
+/* summary */
+.lead { font-size: 1.05rem; }
+.lead b { font-family: var(--serif); font-weight: 400; font-size: 1.5rem; color: var(--plum); }
+.charts { display: flex; flex-direction: column; gap: 28px; }
+.bars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.bars li { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; row-gap: 5px; align-items: center; }
+.bars .bl { grid-column: 1 / -1; font-size: 0.93rem; }
+.bars .bt { height: 12px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+.bars .bf { display: block; height: 100%; border-radius: 4px; background: var(--plum); }
+.bars .bv { font-weight: 600; font-size: 0.93rem; min-width: 6.5em; text-align: right; font-variant-numeric: tabular-nums; }
+.bars .bv small { font-weight: 400; color: var(--soft); }
+
+/* tables */
+.table-box { overflow-x: auto; border: 2px solid var(--ink); border-radius: 16px; background: var(--white); }
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+th, td { padding: 8px 10px; text-align: left; white-space: nowrap; border-bottom: 1px solid var(--rule); }
+th { background: var(--plum-tint); font-weight: 600; position: sticky; top: 0; }
+tr:last-child td { border-bottom: 0; }
+td.yes { color: var(--leaf); font-weight: 600; }
+td.no { color: var(--berry-ink); }
+.empty { background: var(--plum-tint); border-radius: 18px; padding: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+	<header class="top">
+		<div>
+			<span class="tag">Solo para el equipo</span>
+			<h1>Panel de datos</h1>
+		</div>
+		<div class="actions" id="actions" hidden>
+			<button type="button" class="btn leaf" id="pdf">Descargar PDF</button>
+			<button type="button" class="btn light" id="logout">Salir</button>
+		</div>
+	</header>
+
+	<form class="sheet" id="login" autocomplete="on">
+		<p class="soft">Ingresá con el usuario del equipo para ver todas las respuestas anónimas del test y del juego.</p>
+		<div class="field"><label for="user">Usuario</label><input id="user" name="username" autocomplete="username" autocapitalize="none" required></div>
+		<div class="field"><label for="pass">Contraseña</label><input id="pass" name="password" type="password" autocomplete="current-password" required></div>
+		<p class="error" id="err" aria-live="polite"></p>
+		<button type="submit" class="btn" id="enter">Entrar</button>
+	</form>
+
+	<main id="panel" hidden>
+		<div class="tabs" role="tablist">
+			<button type="button" class="tab" role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+			<button type="button" class="tab" role="tab" data-tab="tests" aria-selected="false">Respuestas del test</button>
+			<button type="button" class="tab" role="tab" data-tab="juego" aria-selected="false">Respuestas del juego</button>
+		</div>
+		<section data-panel="resumen" id="resumen" style="margin-top:24px"></section>
+		<section data-panel="tests" id="tests" style="margin-top:24px" hidden></section>
+		<section data-panel="juego" id="juego" style="margin-top:24px" hidden></section>
+	</main>
+
+	<p class="note"><a href="./">Volver a la página</a></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script>
+(function () {
+	var API = 'https://diabetes-stats.felipesa254.workers.dev';
+	var KEY = 'diabetes-admin';
+	var data = null;
+
+	// Same order and wording as the questions in index.html (stored values are option indexes).
+	var COLS = [
+		{ k: 'sexo', h: 'Sexo', o: ['Mujer', 'Hombre'] },
+		{ k: 'edad', h: 'Edad', o: ['Menos de 45', '45 a 54', '55 a 64', 'Más de 64'] },
+		{ k: 'imc', h: 'IMC', o: ['Menos de 25', '25 a 30', 'Más de 30'] },
+		{ k: 'cintura', h: 'Cintura', o: ['Normal', 'Elevada', 'Muy elevada', 'No sabe'] },
+		{ k: 'actividad', h: 'Actividad diaria', o: ['Sí', 'No'] },
+		{ k: 'verduras', h: 'Frutas y verduras', o: ['Todos los días', 'No todos'] },
+		{ k: 'presion', h: 'Medicación presión', o: ['No', 'Sí'] },
+		{ k: 'glucosa', h: 'Glucosa alta', o: ['No', 'Sí'] },
+		{ k: 'familia', h: 'Familiares', o: ['No', 'Lejanos', 'Directos'] }
+	];
+	var CARDS = [
+		'La diabetes aparece por comer mucha azúcar. (Mito)',
+		'La tipo 2 puede no dar síntomas durante años. (Realidad)',
+		'Las personas con diabetes no pueden comer nada dulce. (Mito)',
+		'Caminar 30 minutos por día ayuda a prevenirla. (Realidad)',
+		'Con medicación ya no hace falta cuidar la alimentación. (Mito)',
+		'La prediabetes se puede revertir. (Realidad)',
+		'Las personas con diabetes no pueden comer fruta. (Mito)',
+		'Mal controlada, puede dañar ojos, riñones y pies. (Realidad)',
+		'Empezar con insulina significa que hiciste algo mal. (Mito)'
+	];
+	var BANDS = ['Riesgo bajo (menos de 7)', 'Ligeramente elevado (7 a 11)', 'Moderado (12 a 14)', 'Alto (15 a 20)', 'Muy alto (más de 20)'];
+	var BAND_COLORS = ['var(--leaf)', 'var(--leaf)', 'var(--lemon)', 'var(--tangerine)', 'var(--berry)'];
+
+	function $(id) { return document.getElementById(id); }
+	function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+	function pct(n, t) { return t ? Math.round(n / t * 100) : 0; }
+	function band(score) { return score < 7 ? 0 : score <= 11 ? 1 : score <= 14 ? 2 : score <= 20 ? 3 : 4; }
+	function fmtDay(iso) { var d = iso.split('-'); return d[2] + '/' + d[1] + '/' + d[0]; }
+	function dec(n) { return n.toFixed(1).replace('.', ','); }
+
+	function store(v) {
+		try { if (v) sessionStorage.setItem(KEY, JSON.stringify(v)); else sessionStorage.removeItem(KEY); } catch (e) {}
+	}
+	function stored() {
+		try { return JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) { return null; }
+	}
+
+	/* ---------- numbers shared by the screen and the PDF ---------- */
+	function summarize() {
+		var t = data.tests, g = data.games, s = { tests: t.length, games: g.length, bands: [0, 0, 0, 0, 0], consult: 0, avg: 0, avgHits: 0, cards: CARDS.map(function () { return 0; }) };
+		var count = function (k, from, to) { return t.filter(function (r) { return r[k] >= from && r[k] <= to; }).length; };
+		t.forEach(function (r) { s.bands[band(r.score)]++; s.avg += r.score; if (r.score >= 12) s.consult++; });
+		if (t.length) s.avg /= t.length;
+		g.forEach(function (r) { s.avgHits += r.hits; r.picks.split('').forEach(function (c, i) { if (c === '1') s.cards[i]++; }); });
+		if (g.length) s.avgHits /= g.length;
+		s.factors = [
+			['Tiene 45 años o más', count('edad', 1, 3)],
+			['Sobrepeso (IMC de 25 o más)', count('imc', 1, 2)],
+			['Cintura por encima de lo recomendado', count('cintura', 1, 2)],
+			['No hace 30 minutos de actividad por día', count('actividad', 1, 1)],
+			['No come frutas o verduras todos los días', count('verduras', 1, 1)],
+			['Tomó medicación para la presión', count('presion', 1, 1)],
+			['Alguna vez tuvo la glucosa alta', count('glucosa', 1, 1)],
+			['Tiene familiares con diabetes', count('familia', 1, 2)]
+		].sort(function (a, b) { return b[1] - a[1]; });
+		return s;
+	}
+
+	function bars(rows, total) {
+		return '<ul class="bars">' + rows.map(function (r) {
+			return '<li><span class="bl">' + esc(r[0]) + '</span><span class="bt"><span class="bf" style="width:' + pct(r[1], total) + '%' + (r[2] ? ';background:' + r[2] : '') + '"></span></span>' +
+				'<span class="bv">' + pct(r[1], total) + ' % <small>(' + r[1] + ')</small></span></li>';
+		}).join('') + '</ul>';
+	}
+
+	/* ---------- screen ---------- */
+	function render() {
+		var s = summarize();
+		var res = '<p class="lead"><b>' + s.tests + '</b> tests completos y <b>' + s.games + '</b> partidas de Mito o realidad.</p>';
+		if (!s.tests && !s.games) {
+			res += '<p class="empty">Todavía no hay respuestas. Aparecen acá apenas alguien termina el test o el juego en la página pública.</p>';
+		} else {
+			res += '<div class="charts">';
+			if (s.tests) {
+				res += '<div><h3>Resultados del test</h3>' + bars(s.bands.map(function (n, i) { return [BANDS[i], n, BAND_COLORS[i]]; }), s.tests) +
+					'<p class="note" style="margin-top:12px">Puntaje promedio: ' + dec(s.avg) + ' de 26. Deberían consultar (12 o más): ' + pct(s.consult, s.tests) + ' % (' + s.consult + ').</p></div>' +
+					'<div><h3>Factores de riesgo</h3>' + bars(s.factors, s.tests) + '</div>';
+				COLS.forEach(function (c) {
+					var counts = c.o.map(function () { return 0; });
+					data.tests.forEach(function (r) { if (r[c.k] != null) counts[r[c.k]]++; });
+					res += '<div><h3>' + esc(c.h) + '</h3>' + bars(c.o.map(function (label, i) { return [label, counts[i]]; }), s.tests) + '</div>';
+				});
+			}
+			if (s.games) {
+				res += '<div><h3>Mito o realidad: porcentaje que acertó cada frase</h3>' +
+					bars(CARDS.map(function (c, i) { return [c, s.cards[i], 'var(--leaf)']; }), s.games) +
+					'<p class="note" style="margin-top:12px">Promedio: ' + dec(s.avgHits) + ' de ' + CARDS.length + ' aciertos.</p></div>';
+			}
+			res += '</div>';
+		}
+		$('resumen').innerHTML = res;
+
+		$('tests').innerHTML = data.tests.length
+			? '<p class="soft">' + data.tests.length + ' respuestas, de la más nueva a la más vieja.</p><div class="table-box"><table><thead><tr><th>#</th><th>Día</th><th>Puntaje</th>' +
+				COLS.map(function (c) { return '<th>' + esc(c.h) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+				data.tests.slice().reverse().map(function (r) {
+					return '<tr><td>' + r.id + '</td><td>' + fmtDay(r.day) + '</td><td>' + r.score + '</td>' +
+						COLS.map(function (c) { return '<td>' + esc(r[c.k] == null ? '' : c.o[r[c.k]]) + '</td>'; }).join('') + '</tr>';
+				}).join('') + '</tbody></table></div>'
+			: '<p class="empty">Todavía nadie completó el test.</p>';
+
+		$('juego').innerHTML = data.games.length
+			? '<p class="soft">' + data.games.length + ' partidas. Columnas F1 a F9: si acertó cada frase.</p><div class="table-box"><table><thead><tr><th>#</th><th>Día</th><th>Aciertos</th>' +
+				CARDS.map(function (c, i) { return '<th title="' + esc(c) + '">F' + (i + 1) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+				data.games.slice().reverse().map(function (r) {
+					return '<tr><td>' + r.id + '</td><td>' + fmtDay(r.day) + '</td><td>' + r.hits + ' de 9</td>' +
+						r.picks.split('').map(function (c) { return c === '1' ? '<td class="yes">Sí</td>' : '<td class="no">No</td>'; }).join('') + '</tr>';
+				}).join('') + '</tbody></table></div>' +
+				'<ol class="note">' + CARDS.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ol>'
+			: '<p class="empty">Todavía nadie terminó el juego.</p>';
+	}
+
+	document.querySelectorAll('.tab').forEach(function (tab) {
+		tab.addEventListener('click', function () {
+			document.querySelectorAll('.tab').forEach(function (t) { t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+			document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.dataset.panel !== tab.dataset.tab; });
+		});
+	});
+
+	/* ---------- login ---------- */
+	function enter(creds, quiet) {
+		$('enter').disabled = true;
+		$('err').textContent = '';
+		return fetch(API + '/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(creds), cache: 'no-store' })
+			.then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'Error'); return j; }); })
+			.then(function (j) {
+				data = j;
+				store(creds);
+				render();
+				$('login').hidden = true;
+				$('panel').hidden = false;
+				$('actions').hidden = false;
+			})
+			.catch(function (e) {
+				store(null);
+				if (!quiet) $('err').textContent = e.message === 'Failed to fetch' ? 'No hay conexión con el servidor. Probá de nuevo.' : e.message;
+			})
+			.then(function () { $('enter').disabled = false; });
+	}
+
+	$('login').addEventListener('submit', function (e) {
+		e.preventDefault();
+		enter({ user: $('user').value.trim(), pass: $('pass').value });
+	});
+
+	$('logout').addEventListener('click', function () {
+		store(null); data = null;
+		$('panel').hidden = true; $('actions').hidden = true; $('login').hidden = false;
+		$('pass').value = '';
+	});
+
+	var saved = stored();
+	if (saved) enter(saved, true);
+
+	/* ---------- PDF ---------- */
+	$('pdf').addEventListener('click', function () {
+		if (!data || !window.jspdf) return;
+		var s = summarize();
+		var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+		var W = doc.internal.pageSize.getWidth(), M = 40, y = 50;
+		var plum = [91, 58, 140], ink = [43, 30, 63], soft = [98, 87, 122];
+		var today = new Date().toISOString().slice(0, 10);
+
+		doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor.apply(doc, plum);
+		doc.text('Tu riesgo de diabetes: datos del proyecto', M, y);
+		doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor.apply(doc, soft);
+		y += 18; doc.text('Stefani Lima y Lucia Vázquez. Informe generado el ' + fmtDay(today) + '. Respuestas anónimas de c4snchz.github.io/diabetes.', M, y);
+		y += 22; doc.setFontSize(12); doc.setTextColor.apply(doc, ink);
+		doc.text(s.tests + ' tests completos. Puntaje promedio ' + dec(s.avg) + ' de 26. Deberían consultar: ' + pct(s.consult, s.tests) + ' %.', M, y);
+		y += 16; doc.text(s.games + ' partidas de Mito o realidad. Promedio ' + dec(s.avgHits) + ' de 9 aciertos.', M, y);
+
+		var head = { fillColor: plum, textColor: 255, fontStyle: 'bold' };
+		var opts = function (title, headRow, body, extra) {
+			var o = { startY: (doc.lastAutoTable ? doc.lastAutoTable.finalY : y) + 34, head: [headRow], body: body, margin: { left: M, right: M }, headStyles: head,
+				styles: { fontSize: 9, textColor: ink, cellPadding: 4 }, alternateRowStyles: { fillColor: [246, 243, 250] },
+				didDrawPage: function () {} };
+			for (var k in extra) o[k] = extra[k];
+			if (o.startY > doc.internal.pageSize.getHeight() - 100) { doc.addPage(); o.startY = 60; }
+			doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor.apply(doc, ink);
+			doc.text(title, M, o.startY - 10);
+			doc.autoTable(o);
+		};
+		var share = function (n, t) { return pct(n, t) + ' %'; };
+
+		if (s.tests) {
+			opts('Resultados del test', ['Nivel de riesgo', 'Personas', '%'], s.bands.map(function (n, i) { return [BANDS[i], n, share(n, s.tests)]; }), {});
+			opts('Factores de riesgo', ['Factor', 'Personas', '%'], s.factors.map(function (f) { return [f[0], f[1], share(f[1], s.tests)]; }), {});
+			var perQ = [];
+			COLS.forEach(function (c) {
+				var counts = c.o.map(function () { return 0; });
+				data.tests.forEach(function (r) { if (r[c.k] != null) counts[r[c.k]]++; });
+				c.o.forEach(function (label, i) { perQ.push([i === 0 ? c.h : '', label, counts[i], share(counts[i], s.tests)]); });
+			});
+			opts('Respuestas por pregunta', ['Pregunta', 'Respuesta', 'Personas', '%'], perQ, {});
+		}
+		if (s.games) {
+			opts('Mito o realidad: aciertos por frase', ['Frase', 'Acertaron', '%'], CARDS.map(function (c, i) { return [c, s.cards[i], share(s.cards[i], s.games)]; }), {});
+		}
+		if (s.tests) {
+			doc.addPage();
+			doc.lastAutoTable = null; y = 30;
+			opts('Todas las respuestas del test', ['#', 'Día', 'Pts'].concat(COLS.map(function (c) { return c.h; })),
+				data.tests.map(function (r) { return [r.id, fmtDay(r.day), r.score].concat(COLS.map(function (c) { return r[c.k] == null ? '' : c.o[r[c.k]]; })); }),
+				{ styles: { fontSize: 7, textColor: ink, cellPadding: 3 }, margin: { left: 20, right: 20 } });
+		}
+		if (s.games) {
+			opts('Todas las partidas del juego', ['#', 'Día', 'Aciertos'].concat(CARDS.map(function (c, i) { return 'F' + (i + 1); })),
+				data.games.map(function (r) { return [r.id, fmtDay(r.day), r.hits].concat(r.picks.split('').map(function (c) { return c === '1' ? 'Sí' : 'No'; })); }),
+				{ styles: { fontSize: 8, textColor: ink, cellPadding: 3 } });
+		}
+
+		var pages = doc.internal.getNumberOfPages();
+		for (var p = 1; p <= pages; p++) {
+			doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, soft);
+			doc.text('Página ' + p + ' de ' + pages, W - M, doc.internal.pageSize.getHeight() - 20, { align: 'right' });
+		}
+		doc.save('datos-diabetes-' + today + '.pdf');
+	});
+})();
+</script>
+</body>
+</html>

@@ -75,11 +75,29 @@ async function stats(env) {
 	}, 200, { 'Cache-Control': 'public, max-age=60' });
 }
 
+// Full anonymous rows for the team panel (admin.html). Credentials live in Worker secrets.
+async function admin(env, b) {
+	if (!env.ADMIN_USER || b.user !== env.ADMIN_USER || b.pass !== env.ADMIN_PASS) {
+		await new Promise((r) => setTimeout(r, 800));
+		return json({ error: 'Usuario o contraseña incorrectos' }, 401);
+	}
+	const [tests, games] = await env.DB.batch([
+		env.DB.prepare('SELECT * FROM tests ORDER BY id'),
+		env.DB.prepare('SELECT * FROM games ORDER BY id')
+	]);
+	return json({ tests: tests.results, games: games.results });
+}
+
 export default {
 	async fetch(req, env) {
 		const { pathname } = new URL(req.url);
 		if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
 		if (req.method === 'GET' && pathname === '/stats') return stats(env);
+		if (req.method === 'POST' && pathname === '/admin') {
+			let body;
+			try { body = await req.json(); } catch { return json({ error: 'bad json' }, 400); }
+			return admin(env, body);
+		}
 		if (req.method === 'POST' && (pathname === '/test' || pathname === '/game')) {
 			let body;
 			try { body = await req.json(); } catch { return json({ error: 'bad json' }, 400); }
