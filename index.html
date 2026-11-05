@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tu Riesgo de Diabetes</title>
+<meta name="description" content="Información sobre diabetes, test de riesgo FINDRISC y juego de mitos y realidades.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap">
+<style>
+/* Layout: one phone-first reading column; the blue circle (symbol of diabetes awareness) anchors the hero, the test is the centerpiece */
+:root {
+	--bg: #f2f5f9;
+	--surface: #ffffff;
+	--ink: #122033;
+	--muted: #52627a;
+	--line: #d7dfea;
+	--blue: #1b5cab;
+	--blue-soft: #e2ecf8;
+	--on-blue: #ffffff;
+	--ok: #1d7347;
+	--ok-soft: #e0f2e8;
+	--warn: #9a5b00;
+	--warn-soft: #fbeed6;
+	--risk: #b0261d;
+	--risk-soft: #f8e1df;
+	--display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+	--body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme="light"]) {
+		--bg: #0d1520; --surface: #142031; --ink: #e8eef6; --muted: #9eb0c7; --line: #26374e;
+		--blue: #6ea8ee; --blue-soft: #1a2d47; --on-blue: #0d1520;
+		--ok: #63d199; --ok-soft: #16301f; --warn: #f2b453; --warn-soft: #382910; --risk: #f3887f; --risk-soft: #3c1b19;
+		color-scheme: dark;
+	}
+}
+:root[data-theme="dark"] {
+	--bg: #0d1520; --surface: #142031; --ink: #e8eef6; --muted: #9eb0c7; --line: #26374e;
+	--blue: #6ea8ee; --blue-soft: #1a2d47; --on-blue: #0d1520;
+	--ok: #63d199; --ok-soft: #16301f; --warn: #f2b453; --warn-soft: #382910; --risk: #f3887f; --risk-soft: #3c1b19;
+	color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+[hidden] { display: none !important; }
+body {
+	background: var(--bg); color: var(--ink);
+	font-family: var(--body); font-size: 17px; line-height: 1.55;
+	-webkit-font-smoothing: antialiased;
+}
+.wrap {
+	max-width: 680px; margin: 0 auto;
+	padding-left: max(16px, env(safe-area-inset-left, 0px));
+	padding-right: max(16px, env(safe-area-inset-right, 0px));
+	padding-block: 20px 48px;
+	display: flex; flex-direction: column; gap: 44px;
+}
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 7vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: 1.12rem; font-weight: 600; }
+p { margin: 0; }
+a { color: var(--blue); }
+.eyebrow { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); }
+.muted { color: var(--muted); }
+section { display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 16px; }
+.lead { font-size: 1.1rem; color: var(--muted); max-width: 34em; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; }
+.hero-text { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ring {
+	width: 108px; height: 108px; border-radius: 50%;
+	border: 16px solid var(--blue); flex-shrink: 0;
+}
+@media (max-width: 480px) {
+	.hero { grid-template-columns: 1fr; }
+	.ring { width: 64px; height: 64px; border-width: 10px; order: -1; }
+}
+.btn {
+	appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 700;
+	background: var(--blue); color: var(--on-blue);
+	padding: 14px 22px; border-radius: 12px; text-decoration: none;
+	display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn:focus-visible, .opt:focus-visible, .chip:focus-visible, input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.btn.ghost { background: transparent; color: var(--blue); border: 2px solid var(--line); }
+.btn:disabled { opacity: 0.4; cursor: default; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+	font-size: 0.92rem; padding: 7px 13px; border-radius: 999px; text-decoration: none;
+	background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+}
+
+/* test */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px 20px; display: flex; flex-direction: column; gap: 18px; }
+.progress { height: 6px; background: var(--blue-soft); border-radius: 99px; overflow: hidden; }
+.progress > div { height: 100%; background: var(--blue); width: 0; transition: width .3s ease; }
+.step-count { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.q-help { color: var(--muted); font-size: 0.95rem; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt {
+	appearance: none; font: inherit; text-align: left; cursor: pointer;
+	background: var(--bg); color: var(--ink);
+	border: 2px solid var(--line); border-radius: 12px; padding: 14px 16px;
+	transition: border-color .15s, background .15s;
+}
+.opt:hover { border-color: var(--blue); }
+.opt[aria-pressed="true"] { border-color: var(--blue); background: var(--blue-soft); font-weight: 700; }
+.nav-row { display: flex; justify-content: space-between; gap: 10px; }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label { font-weight: 700; font-size: 0.95rem; }
+.field input {
+	font: inherit; width: 100%; padding: 12px 14px; border-radius: 12px;
+	border: 2px solid var(--line); background: var(--bg); color: var(--ink);
+}
+.bmi-out { font-size: 0.95rem; color: var(--muted); min-height: 1.5em; }
+.error { color: var(--risk); font-size: 0.95rem; }
+
+/* result */
+.result-head { display: flex; flex-direction: column; gap: 6px; }
+.score { font-family: var(--display); font-weight: 800; font-size: 3.2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.score small { font-size: 1.1rem; color: var(--muted); font-weight: 600; }
+.pill { align-self: flex-start; font-weight: 700; font-size: 0.92rem; padding: 6px 12px; border-radius: 999px; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.risk { background: var(--risk-soft); color: var(--risk); }
+.meter { display: flex; flex-direction: column; gap: 6px; }
+.meter-bar { position: relative; display: flex; height: 12px; border-radius: 99px; overflow: visible; }
+.meter-bar span { height: 100%; }
+.meter-bar span:first-child { border-radius: 99px 0 0 99px; }
+.meter-bar span:nth-last-child(2) { border-radius: 0 99px 99px 0; }
+.marker {
+	position: absolute; top: -6px; width: 6px; height: 24px; margin-left: -3px;
+	background: var(--ink); border-radius: 3px; border: 2px solid var(--surface);
+}
+.meter-labels { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.factors { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.factors li { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; border-bottom: 1px dashed var(--line); padding-bottom: 6px; }
+.factors b { font-variant-numeric: tabular-nums; }
+.note { background: var(--blue-soft); border-radius: 12px; padding: 14px 16px; font-size: 0.95rem; }
+
+/* symptoms */
+.symptoms { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.symptoms li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 0.97rem; min-width: 0; }
+@media (max-width: 420px) { .symptoms { grid-template-columns: 1fr; } }
+.alert { border-left: 5px solid var(--risk); background: var(--risk-soft); border-radius: 0 12px 12px 0; padding: 14px 16px; font-size: 0.97rem; }
+
+/* types */
+.types { display: flex; flex-direction: column; gap: 14px; }
+.type { display: flex; flex-direction: column; gap: 4px; padding-left: 14px; border-left: 3px solid var(--line); }
+
+/* values table */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 440px; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-weight: 700; font-size: 0.85rem; color: var(--muted); }
+td.ok { color: var(--ok); font-weight: 700; }
+td.warn { color: var(--warn); font-weight: 700; }
+td.risk { color: var(--risk); font-weight: 700; }
+
+/* myth game */
+.statement { font-family: var(--display); font-weight: 600; font-size: 1.35rem; line-height: 1.3; }
+.mf-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.feedback { border-radius: 12px; padding: 14px 16px; font-size: 0.97rem; display: flex; flex-direction: column; gap: 4px; }
+.feedback.right { background: var(--ok-soft); }
+.feedback.wrong { background: var(--risk-soft); }
+.feedback strong { font-size: 1.05rem; }
+
+/* tips */
+.tips { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.tips li { display: flex; flex-direction: column; gap: 2px; }
+.tips b { font-family: var(--display); font-weight: 600; font-size: 1.05rem; }
+
+.rule15 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.rule15 div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.rule15 b { font-family: var(--display); font-size: 1.6rem; color: var(--blue); line-height: 1; }
+@media (max-width: 480px) { .rule15 { grid-template-columns: 1fr; } }
+
+footer { border-top: 1px solid var(--line); padding-top: 20px; font-size: 0.88rem; color: var(--muted); display: flex; flex-direction: column; gap: 10px; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+	<header class="hero">
+		<div class="hero-text">
+			<span class="eyebrow">Información de salud · 2 minutos</span>
+			<h1>¿Podrías tener diabetes y no saberlo?</h1>
+			<p class="lead">La diabetes tipo 2 puede avanzar durante años sin dar síntomas. Respondé 9 preguntas cortas y conocé tu riesgo para los próximos 10 años.</p>
+			<div><a class="btn" href="#test">Hacer el test</a></div>
+		</div>
+		<div class="ring" aria-hidden="true"></div>
+	</header>
+
+	<nav class="chips" aria-label="Secciones">
+		<a class="chip" href="#test">Test de riesgo</a>
+		<a class="chip" href="#sintomas">Síntomas</a>
+		<a class="chip" href="#que-es">Qué es</a>
+		<a class="chip" href="#valores">Valores</a>
+		<a class="chip" href="#juego">Mito o realidad</a>
+		<a class="chip" href="#prevencion">Prevención</a>
+	</nav>
+
+	<section id="test">
+		<div>
+			<span class="eyebrow">Test FINDRISC</span>
+			<h2>¿Cuál es tu riesgo?</h2>
+		</div>
+		<p class="muted">Es un cuestionario validado que usan médicos de todo el mundo. Es para personas adultas que no tienen diagnóstico de diabetes.</p>
+		<div class="panel" id="quiz" aria-live="polite"></div>
+	</section>
+
+	<section id="sintomas">
+		<div>
+			<span class="eyebrow">Señales de alerta</span>
+			<h2>Consultá aunque el test te dé bajo si tenés…</h2>
+		</div>
+		<ul class="symptoms">
+			<li>Mucha sed todo el día</li>
+			<li>Ganas de orinar seguido, también de noche</li>
+			<li>Hambre constante</li>
+			<li>Bajada de peso sin motivo</li>
+			<li>Cansancio que no se va</li>
+			<li>Visión borrosa</li>
+			<li>Heridas que tardan en cicatrizar</li>
+			<li>Hormigueo en pies o manos</li>
+		</ul>
+		<div class="alert"><b>Emergencia:</b> si alguien con diabetes está confundido, tiene vómitos, respira muy rápido o tiene aliento con olor a fruta, llamá al <b>911</b>.</div>
+	</section>
+
+	<section id="que-es">
+		<div>
+			<span class="eyebrow">Lo básico</span>
+			<h2>¿Qué es la diabetes?</h2>
+		</div>
+		<p>Es cuando hay demasiada glucosa (azúcar) en la sangre, porque el cuerpo no produce suficiente insulina o no la usa bien. Con el tiempo, el exceso de glucosa daña los vasos sanguíneos, los ojos, los riñones, los nervios y el corazón.</p>
+		<div class="types">
+			<div class="type">
+				<h3>Tipo 2</h3>
+				<p class="muted">La más común, alrededor de 9 de cada 10 casos. Se relaciona con la genética, el sobrepeso y el sedentarismo. Muchas veces se puede prevenir o retrasar.</p>
+			</div>
+			<div class="type">
+				<h3>Tipo 1</h3>
+				<p class="muted">El sistema inmune destruye las células que producen insulina. Suele aparecer en niños y jóvenes, no se puede prevenir y se trata con insulina.</p>
+			</div>
+			<div class="type">
+				<h3>Gestacional</h3>
+				<p class="muted">Aparece durante el embarazo. Suele irse después del parto, pero aumenta el riesgo de tener diabetes tipo 2 más adelante.</p>
+			</div>
+			<div class="type">
+				<h3>Prediabetes</h3>
+				<p class="muted">La glucosa está más alta de lo normal, pero todavía no llega a diabetes. Es el mejor momento para actuar, porque en muchos casos se puede revertir.</p>
+			</div>
+		</div>
+	</section>
+
+	<section id="valores">
+		<div>
+			<span class="eyebrow">Análisis de sangre</span>
+			<h2>Valores de referencia</h2>
+		</div>
+		<div class="table-scroll">
+			<table>
+				<thead>
+					<tr><th>Análisis</th><th>Normal</th><th>Prediabetes</th><th>Diabetes</th></tr>
+				</thead>
+				<tbody>
+					<tr><td>Glucemia en ayunas</td><td class="ok">menos de 100 mg/dL</td><td class="warn">100 a 125 mg/dL</td><td class="risk">126 mg/dL o más</td></tr>
+					<tr><td>Hemoglobina glicosilada (HbA1c)</td><td class="ok">menos de 5,7 %</td><td class="warn">5,7 a 6,4 %</td><td class="risk">6,5 % o más</td></tr>
+					<tr><td>Glucemia 2 h después de tomar glucosa (PTOG)</td><td class="ok">menos de 140 mg/dL</td><td class="warn">140 a 199 mg/dL</td><td class="risk">200 mg/dL o más</td></tr>
+				</tbody>
+			</table>
+		</div>
+		<p class="muted">El diagnóstico lo hace siempre un médico y normalmente requiere repetir el análisis. Un solo valor alto no alcanza para confirmarlo.</p>
+	</section>
+
+	<section id="juego">
+		<div>
+			<span class="eyebrow">Juego</span>
+			<h2>¿Mito o realidad?</h2>
+		</div>
+		<div class="panel" id="game" aria-live="polite"></div>
+	</section>
+
+	<section id="prevencion">
+		<div>
+			<span class="eyebrow">Prevención</span>
+			<h2>Qué podés hacer desde hoy</h2>
+		</div>
+		<ul class="tips">
+			<li><b>Moverte 30 minutos al día</b><span class="muted">Caminar rápido cuenta. La meta es llegar a 150 minutos por semana.</span></li>
+			<li><b>Bajar un poco de peso, si tenés sobrepeso</b><span class="muted">Perder entre el 5 % y el 7 % del peso reduce mucho el riesgo de diabetes tipo 2.</span></li>
+			<li><b>Medio plato de verduras</b><span class="muted">Llená la mitad del plato con verduras, un cuarto con proteína y un cuarto con harinas o cereales.</span></li>
+			<li><b>Agua en lugar de refrescos y jugos</b><span class="muted">Las bebidas azucaradas son una de las fuentes de azúcar más fáciles de dejar.</span></li>
+			<li><b>Dormir bien y no fumar</b><span class="muted">El mal descanso y el cigarrillo también aumentan el riesgo.</span></li>
+			<li><b>Hacerte controles</b><span class="muted">A partir de los 35 años, o antes si tenés factores de riesgo, pedí una glucemia en tus controles de rutina.</span></li>
+		</ul>
+	</section>
+
+	<section id="hipoglucemia">
+		<div>
+			<span class="eyebrow">Si convivís con diabetes</span>
+			<h2>La regla del 15 para una baja de azúcar</h2>
+		</div>
+		<p class="muted">Si la glucosa está por debajo de 70 mg/dL o aparecen temblores, sudor frío, mareo o confusión:</p>
+		<div class="rule15">
+			<div><b>15 g</b><span>de azúcar rápida: medio vaso de jugo o 3 cucharaditas de azúcar en agua.</span></div>
+			<div><b>15 min</b><span>de espera, en reposo.</span></div>
+			<div><b>Medir</b><span>otra vez. Si sigue baja, repetir. Si no mejora, llamar al 911.</span></div>
+		</div>
+	</section>
+
+	<footer>
+		<p>Esta página es informativa y no reemplaza la consulta con un profesional de la salud.</p>
+		<p>El test usa la escala FINDRISC (Lindström y Tuomilehto, <i>Diabetes Care</i>, 2003), que estima el riesgo de desarrollar diabetes tipo 2 en los próximos 10 años. Los valores de referencia siguen los criterios de la Asociación Americana de Diabetes (ADA).</p>
+		<p>Las respuestas del test no se guardan ni se envían a ningún lado.</p>
+	</footer>
+</div>
+
+<script>
+(function () {
+	/* ---------- Test FINDRISC ---------- */
+	var quiz = document.getElementById('quiz');
+	var answers = {};
+	var step = 0;
+
+	var steps = [
+		{ id: 'sexo', title: '¿Cuál es tu sexo?', help: 'Lo usamos para interpretar la medida de la cintura.', options: function () {
+			return [{ label: 'Mujer', value: 'f', points: 0 }, { label: 'Hombre', value: 'm', points: 0 }];
+		} },
+		{ id: 'edad', title: '¿Qué edad tenés?', options: function () {
+			return [
+				{ label: 'Menos de 45 años', points: 0 },
+				{ label: '45 a 54 años', points: 2 },
+				{ label: '55 a 64 años', points: 3 },
+				{ label: 'Más de 64 años', points: 4 }
+			];
+		} },
+		{ id: 'imc', title: '¿Cuánto medís y cuánto pesás?', help: 'Con esto calculamos tu índice de masa corporal (IMC).', type: 'bmi' },
+		{ id: 'cintura', title: '¿Cuánto mide tu cintura?', help: 'Medila con una cinta métrica a la altura del ombligo, sin apretar.', options: function () {
+			var opts = answers.sexo && answers.sexo.value === 'm'
+				? [{ label: 'Menos de 94 cm', points: 0 }, { label: '94 a 102 cm', points: 3 }, { label: 'Más de 102 cm', points: 4 }]
+				: [{ label: 'Menos de 80 cm', points: 0 }, { label: '80 a 88 cm', points: 3 }, { label: 'Más de 88 cm', points: 4 }];
+			opts.push({ label: 'No lo sé', value: 'nose', points: 0 });
+			return opts;
+		} },
+		{ id: 'actividad', title: '¿Hacés al menos 30 minutos de actividad física por día?', help: 'Cuenta el trabajo, caminar, andar en bicicleta o hacer deporte.', options: function () {
+			return [{ label: 'Sí', points: 0 }, { label: 'No', points: 2 }];
+		} },
+		{ id: 'verduras', title: '¿Comés verduras o frutas todos los días?', options: function () {
+			return [{ label: 'Sí, todos los días', points: 0 }, { label: 'No todos los días', points: 1 }];
+		} },
+		{ id: 'presion', title: '¿Alguna vez tomaste medicación para la presión alta de forma regular?', options: function () {
+			return [{ label: 'No', points: 0 }, { label: 'Sí', points: 2 }];
+		} },
+		{ id: 'glucosa', title: '¿Alguna vez te encontraron la glucosa (azúcar en sangre) alta?', help: 'Por ejemplo en un control, durante una enfermedad o en un embarazo.', options: function () {
+			return [{ label: 'No', points: 0 }, { label: 'Sí', points: 5 }];
+		} },
+		{ id: 'familia', title: '¿Algún familiar tiene o tuvo diabetes?', help: 'Tipo 1 o tipo 2.', options: function () {
+			return [
+				{ label: 'No', points: 0 },
+				{ label: 'Sí: abuelos, tíos o primos', points: 3 },
+				{ label: 'Sí: padres, hermanos o hijos', points: 5 }
+			];
+		} }
+	];
+
+	var factorNames = {
+		edad: 'Edad', imc: 'Peso (IMC)', cintura: 'Cintura', actividad: 'Poca actividad física',
+		verduras: 'Pocas frutas y verduras', presion: 'Presión alta', glucosa: 'Glucosa alta alguna vez', familia: 'Antecedentes familiares'
+	};
+
+	function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+	function bmiPoints(bmi) { return bmi < 25 ? 0 : bmi <= 30 ? 1 : 3; }
+
+	function renderStep() {
+		var s = steps[step];
+		var pct = Math.round((step / steps.length) * 100);
+		var html = '<div class="progress" aria-hidden="true"><div style="width:' + pct + '%"></div></div>' +
+			'<span class="step-count">Pregunta ' + (step + 1) + ' de ' + steps.length + '</span>' +
+			'<h3 id="q-title">' + esc(s.title) + '</h3>' +
+			(s.help ? '<p class="q-help">' + esc(s.help) + '</p>' : '');
+
+		if (s.type === 'bmi') {
+			var a = answers.imc || {};
+			html += '<div class="fields">' +
+				'<div class="field"><label for="altura">Altura (cm)</label><input id="altura" type="number" inputmode="numeric" min="120" max="220" placeholder="Ej: 168" value="' + (a.h || '') + '"></div>' +
+				'<div class="field"><label for="peso">Peso (kg)</label><input id="peso" type="number" inputmode="decimal" min="30" max="250" step="0.1" placeholder="Ej: 72" value="' + (a.w || '') + '"></div>' +
+				'</div><p class="bmi-out" id="bmi-out"></p>';
+		} else {
+			html += '<div class="opts" role="group" aria-labelledby="q-title">';
+			s.options().forEach(function (o, i) {
+				var sel = answers[s.id] && answers[s.id].label === o.label;
+				html += '<button type="button" class="opt" data-i="' + i + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' + esc(o.label) + '</button>';
+			});
+			html += '</div>';
+		}
+
+		html += '<div class="nav-row">' +
+			'<button type="button" class="btn ghost" id="back"' + (step === 0 ? ' disabled' : '') + '>Atrás</button>' +
+			(s.type === 'bmi' ? '<button type="button" class="btn" id="next">Siguiente</button>' : '') +
+			'</div>';
+		quiz.innerHTML = html;
+
+		document.getElementById('back').addEventListener('click', function () { step--; renderStep(); });
+
+		if (s.type === 'bmi') {
+			var hIn = document.getElementById('altura'), wIn = document.getElementById('peso'), out = document.getElementById('bmi-out');
+			var update = function () {
+				var h = parseFloat(hIn.value), w = parseFloat(wIn.value);
+				out.className = 'bmi-out';
+				if (h >= 120 && h <= 220 && w >= 30 && w <= 250) {
+					var bmi = w / Math.pow(h / 100, 2);
+					out.textContent = 'Tu IMC es ' + bmi.toFixed(1).replace('.', ',');
+				} else { out.textContent = ''; }
+			};
+			hIn.addEventListener('input', update); wIn.addEventListener('input', update); update();
+			document.getElementById('next').addEventListener('click', function () {
+				var h = parseFloat(hIn.value), w = parseFloat(wIn.value);
+				if (!(h >= 120 && h <= 220) || !(w >= 30 && w <= 250)) {
+					out.className = 'error';
+					out.textContent = 'Ingresá tu altura en centímetros (entre 120 y 220) y tu peso en kilos (entre 30 y 250).';
+					return;
+				}
+				var bmi = w / Math.pow(h / 100, 2);
+				answers.imc = { h: h, w: w, bmi: bmi, points: bmiPoints(bmi), label: 'IMC ' + bmi.toFixed(1) };
+				step++; renderStep();
+			});
+		} else {
+			var opts = s.options();
+			quiz.querySelectorAll('.opt').forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					var o = opts[+btn.dataset.i];
+					answers[s.id] = o;
+					quiz.querySelectorAll('.opt').forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+					setTimeout(function () {
+						if (step < steps.length - 1) { step++; renderStep(); } else { renderResult(); }
+					}, 220);
+				});
+			});
+		}
+	}
+
+	function category(score) {
+		if (score < 7) return { k: 'ok', name: 'Riesgo bajo', risk: '1 de cada 100',
+			advice: 'Seguí así. Moverte, comer verduras todos los días y mantener tu peso es la mejor prevención. Podés repetir el test dentro de unos años.' };
+		if (score <= 11) return { k: 'ok', name: 'Riesgo ligeramente elevado', risk: '1 de cada 25',
+			advice: 'Tu riesgo es algo mayor que el promedio. Pequeños cambios en la alimentación y la actividad física pueden bajarlo. En tu próximo control, pedí una glucemia.' };
+		if (score <= 14) return { k: 'warn', name: 'Riesgo moderado', risk: '1 de cada 6',
+			advice: 'Te recomendamos consultar con tu médico y pedir un análisis de glucemia. Con cambios de hábitos, el riesgo se puede reducir bastante.' };
+		if (score <= 20) return { k: 'risk', name: 'Riesgo alto', risk: '1 de cada 3',
+			advice: 'Consultá con tu médico en las próximas semanas y pedí una glucemia en ayunas o una hemoglobina glicosilada (HbA1c). Podrías tener prediabetes o diabetes sin síntomas.' };
+		return { k: 'risk', name: 'Riesgo muy alto', risk: '1 de cada 2',
+			advice: 'Consultá con tu médico lo antes posible y pedí un análisis de sangre. Es posible que ya tengas diabetes sin saberlo, y detectarla temprano evita complicaciones.' };
+	}
+
+	function renderResult() {
+		var score = 0, factors = [];
+		Object.keys(factorNames).forEach(function (k) {
+			var p = answers[k] ? answers[k].points : 0;
+			score += p;
+			if (p > 0) factors.push({ name: factorNames[k], p: p });
+		});
+		factors.sort(function (a, b) { return b.p - a.p; });
+		var c = category(score);
+		var consult = score >= 12;
+		var segs = [[7, 'var(--ok)'], [5, 'var(--ok)'], [3, 'var(--warn)'], [6, 'var(--risk)'], [6, 'var(--risk)']];
+		var segHtml = segs.map(function (s, i) {
+			return '<span style="width:' + (s[0] / 27 * 100) + '%;background:' + s[1] + ';opacity:' + (i % 2 ? 1 : 0.6) + '"></span>';
+		}).join('');
+		var markerLeft = ((score + 0.5) / 27) * 100;
+
+		var html = '<div class="progress" aria-hidden="true"><div style="width:100%"></div></div>' +
+			'<div class="result-head"><span class="eyebrow">Tu resultado</span>' +
+			'<div class="score">' + score + ' <small>de 26 puntos</small></div></div>' +
+			'<span class="pill ' + c.k + '">' + c.name + '</span>' +
+			'<div class="meter"><div class="meter-bar">' + segHtml + '<span class="marker" style="left:' + markerLeft + '%"></span></div>' +
+			'<div class="meter-labels"><span>0</span><span>7</span><span>12</span><span>15</span><span>21</span><span>26</span></div></div>' +
+			'<p>Se estima que <b>' + c.risk + '</b> personas con este puntaje desarrollan diabetes tipo 2 en los próximos 10 años.</p>' +
+			'<p>' + c.advice + '</p>' +
+			'<span class="pill ' + (consult ? 'risk' : 'ok') + '">' + (consult ? 'Recomendado: consultar con tu médico' : 'Por ahora no hace falta una consulta por esto') + '</span>';
+
+		if (factors.length) {
+			html += '<div><h3 style="margin-bottom:8px">Lo que más suma en tu caso</h3><ul class="factors">' +
+				factors.map(function (f) { return '<li><span>' + f.name + '</span><b>+' + f.p + '</b></li>'; }).join('') + '</ul></div>';
+		}
+		if (answers.cintura && answers.cintura.value === 'nose') {
+			html += '<p class="note">No indicaste la medida de tu cintura, así que tu riesgo real puede ser mayor. Medila cuando puedas y repetí el test.</p>';
+		}
+		html += '<p class="note">Si tenés alguno de los síntomas de abajo, consultá aunque tu resultado sea bajo.</p>' +
+			'<div class="nav-row"><button type="button" class="btn ghost" id="restart">Repetir el test</button><a class="btn" href="#sintomas">Ver síntomas</a></div>';
+		quiz.innerHTML = html;
+		document.getElementById('restart').addEventListener('click', function () { answers = {}; step = 0; renderStep(); });
+		quiz.scrollIntoView({ block: 'start' });
+	}
+
+	renderStep();
+
+	/* ---------- Mito o realidad ---------- */
+	var game = document.getElementById('game');
+	var cards = [
+		{ s: 'La diabetes aparece por comer mucha azúcar.', real: false,
+			why: 'La tipo 1 es autoinmune. En la tipo 2 influyen la genética, el sobrepeso y el sedentarismo. El exceso de azúcar contribuye al sobrepeso, pero no es la única causa.' },
+		{ s: 'La diabetes tipo 2 puede no dar síntomas durante años.', real: true,
+			why: 'Muchas personas se enteran en un análisis de rutina. Por eso los controles son tan importantes.' },
+		{ s: 'Las personas con diabetes no pueden comer nada dulce.', real: false,
+			why: 'Pueden comer dulces de forma ocasional y en porciones chicas, dentro de un plan de alimentación.' },
+		{ s: 'Caminar 30 minutos por día ayuda a prevenir la diabetes tipo 2.', real: true,
+			why: 'La actividad física ayuda a que el cuerpo use mejor la insulina, incluso sin bajar de peso.' },
+		{ s: 'Si tomás pastillas o insulina, ya no hace falta cuidar la alimentación.', real: false,
+			why: 'La medicación funciona mejor junto con la alimentación y la actividad física, no en lugar de ellas.' },
+		{ s: 'La prediabetes se puede revertir.', real: true,
+			why: 'En muchos casos, moverse más y bajar un poco de peso alcanza para que la glucosa vuelva a valores normales.' },
+		{ s: 'Las personas con diabetes no pueden comer fruta.', real: false,
+			why: 'La fruta entera aporta fibra y vitaminas. Se recomienda comerla en porciones, mejor que en jugo.' },
+		{ s: 'Con el tiempo, la diabetes mal controlada puede dañar los ojos, los riñones y los pies.', real: true,
+			why: 'Por eso se recomiendan controles de vista, de riñón y de pies al menos una vez al año.' },
+		{ s: 'Empezar con insulina significa que hiciste algo mal.', real: false,
+			why: 'La diabetes cambia con los años y muchas personas necesitan insulina en algún momento. Es un tratamiento, no un castigo.' }
+	];
+	var gi = 0, hits = 0, answered = false;
+
+	function renderCard() {
+		answered = false;
+		var c = cards[gi];
+		game.innerHTML = '<span class="step-count">' + (gi + 1) + ' de ' + cards.length + ' · ' + hits + ' aciertos</span>' +
+			'<p class="statement">“' + esc(c.s) + '”</p>' +
+			'<div class="mf-buttons"><button type="button" class="btn ghost" data-a="0">Mito</button><button type="button" class="btn ghost" data-a="1">Realidad</button></div>' +
+			'<div id="fb"></div>';
+		game.querySelectorAll('[data-a]').forEach(function (b) {
+			b.addEventListener('click', function () { answer(b.dataset.a === '1'); });
+		});
+	}
+
+	function answer(saidReal) {
+		if (answered) return;
+		answered = true;
+		var c = cards[gi];
+		var right = saidReal === c.real;
+		if (right) hits++;
+		game.querySelectorAll('[data-a]').forEach(function (b) { b.disabled = true; });
+		var last = gi === cards.length - 1;
+		document.getElementById('fb').innerHTML =
+			'<div class="feedback ' + (right ? 'right' : 'wrong') + '"><strong>' + (right ? '¡Correcto! ' : 'No. ') + 'Es ' + (c.real ? 'realidad' : 'mito') + '.</strong><span>' + esc(c.why) + '</span></div>' +
+			'<div class="nav-row" style="margin-top:12px"><span></span><button type="button" class="btn" id="gnext">' + (last ? 'Ver resultado' : 'Siguiente') + '</button></div>';
+		game.querySelector('.step-count').textContent = (gi + 1) + ' de ' + cards.length + ' · ' + hits + ' aciertos';
+		document.getElementById('gnext').addEventListener('click', function () {
+			if (last) { renderGameEnd(); } else { gi++; renderCard(); }
+		});
+		document.getElementById('gnext').focus();
+	}
+
+	function renderGameEnd() {
+		var msg = hits === cards.length ? '¡Perfecto! Sabés mucho sobre diabetes.'
+			: hits >= 6 ? 'Muy bien. Ya conocés lo más importante.'
+			: 'Hay varios mitos muy comunes. Compartí el juego para que más gente los conozca.';
+		game.innerHTML = '<span class="eyebrow">Resultado</span>' +
+			'<div class="score">' + hits + ' <small>de ' + cards.length + ' aciertos</small></div>' +
+			'<p>' + msg + '</p>' +
+			'<div><button type="button" class="btn ghost" id="greplay">Jugar de nuevo</button></div>';
+		document.getElementById('greplay').addEventListener('click', function () { gi = 0; hits = 0; renderCard(); });
+	}
+
+	renderCard();
+})();
+</script>
+</body>
+</html>
